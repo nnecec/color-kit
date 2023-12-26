@@ -1,1 +1,1 @@
-# @color-kit/core
+# @color-kit/atom

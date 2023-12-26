@@ -1,1 +1,0 @@
-# @color-kit/core

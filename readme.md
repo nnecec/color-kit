@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="./apps/website/public/colorkit.jpeg" width="500" />
+</p>
+
 # ColorKit
 
-All about color in here!
+Welcome to the Colorful world.
 
 ## Credits
 
-- [react-colorfull](https://omgovich.github.io/react-colorful)
+- [react-colorful](https://omgovich.github.io/react-colorful)
 
 ## License
 

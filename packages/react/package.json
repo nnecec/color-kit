@@ -10,11 +10,9 @@
   "license": "MIT",
   "author": "nnecec <nnecec@gmail.com>",
   "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
-    },
-    "./package.json": "./package.json"
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
   },
   "main": "./dist/index.js",
   "files": [
@@ -26,12 +24,14 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
-    "@color-kit/core": "workspace:*",
+    "@color-kit/atom": "workspace:*",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.45",
-    "bunchee": "^4.2.2"
+    "@nanostores/react": "^0.7.1",
+    "@nnecec/tsconfig": "^0.2.2",
+    "@types/react": "^18.2.46",
+    "bunchee": "^4.2.9"
   },
   "publishConfig": {
     "access": "public"

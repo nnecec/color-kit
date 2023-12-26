@@ -1,10 +1,10 @@
-import { getHueColor } from '@color-kit/core'
+import { useStore } from '@nanostores/react'
+
+import { useColorContext } from '../context'
 
 export const useHue = () => {
-  const hueColor = getHueColor()
-  return {
-    linearGradient: Object.entries(hueColor)
-      .map(([percent, color]) => `${color} ${percent}%`)
-      .join(','),
-  }
+  const { color } = useColorContext()
+  const h = useStore(color.hue)
+
+  return [h, color.hue.set] as const
 }

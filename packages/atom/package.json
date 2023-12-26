@@ -1,0 +1,36 @@
+{
+  "name": "@color-kit/atom",
+  "version": "0.0.0",
+  "description": "The atom for color-kit",
+  "keywords": [
+    "color"
+  ],
+  "homepage": "",
+  "repository": "https://github.com/nnecec/color-kit",
+  "license": "MIT",
+  "author": "nnecec <nnecec@gmail.com>",
+  "type": "module",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "bunchee -w"
+  },
+  "dependencies": {
+    "nanostores": "^0.9.5"
+  },
+  "devDependencies": {
+    "bunchee": "^4.2.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
