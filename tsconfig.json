@@ -1,0 +1,11 @@
+{
+  "extends": "@nnecec/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@color-kit/core": ["packages/core/src"],
+      "@color-kit/react": ["packages/react/src"],
+      "@color-kit/crystal": ["packages/crystal/src"]
+    }
+  }
+}

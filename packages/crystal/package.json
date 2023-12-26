@@ -1,0 +1,41 @@
+{
+  "name": "@color-kit/crystal",
+  "version": "0.0.0",
+  "description": "The React UI with ColorKit",
+  "keywords": [
+    "color"
+  ],
+  "homepage": "",
+  "repository": "https://github.com/nnecec/color-kit",
+  "license": "MIT",
+  "author": "nnecec <nnecec@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "bunchee -w"
+  },
+  "dependencies": {
+    "@color-kit/react": "workspace:*",
+    "react": "^18.2.0",
+    "react-aria": "^3.31.0",
+    "react-stately": "^3.29.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "bunchee": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

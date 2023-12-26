@@ -1,0 +1,32 @@
+{
+  "name": "@color-kit/core",
+  "version": "0.0.0",
+  "description": "Core library for color-kit",
+  "keywords": [
+    "color"
+  ],
+  "homepage": "",
+  "repository": "https://github.com/nnecec/color-kit",
+  "license": "MIT",
+  "author": "nnecec <nnecec@gmail.com>",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "bunchee -w"
+  },
+  "devDependencies": {
+    "bunchee": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

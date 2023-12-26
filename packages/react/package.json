@@ -1,0 +1,39 @@
+{
+  "name": "@color-kit/react",
+  "version": "0.0.0",
+  "description": "The Headless React friend with ColorKit",
+  "keywords": [
+    "color"
+  ],
+  "homepage": "",
+  "repository": "https://github.com/nnecec/color-kit",
+  "license": "MIT",
+  "author": "nnecec <nnecec@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "bunchee -w"
+  },
+  "dependencies": {
+    "@color-kit/core": "workspace:*",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "bunchee": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
