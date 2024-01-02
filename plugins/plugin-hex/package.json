@@ -1,0 +1,36 @@
+{
+  "name": "@color-kit/plugin-hex",
+  "version": "0.0.0",
+  "description": "The HEX plugin for color-kit",
+  "keywords": [
+    "color"
+  ],
+  "homepage": "",
+  "repository": "https://github.com/nnecec/color-kit",
+  "license": "MIT",
+  "author": "nnecec <nnecec@gmail.com>",
+  "type": "module",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "bunchee -w"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@color-kit/color": "workspace:*",
+    "@color-kit/utils": "workspace:*",
+    "bunchee": "^4.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

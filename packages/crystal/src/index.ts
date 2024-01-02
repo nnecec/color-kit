@@ -1,3 +1,3 @@
-export * from '@color-kit/react'
+export * from '@color-kit/react-atom'
 
 export * from './components'

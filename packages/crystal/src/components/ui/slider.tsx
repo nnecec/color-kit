@@ -1,30 +1,83 @@
-'use client'
+import type { AriaSliderProps } from 'react-aria'
 
-import React from 'react'
+import { useRef } from 'react'
+import { VisuallyHidden, mergeProps, useFocusRing, useNumberFormatter, useSlider, useSliderThumb } from 'react-aria'
+import { useSliderState } from 'react-stately'
 
-import * as SliderPrimitive from '@radix-ui/react-slider'
+import { cls } from '../../utils'
 
-export type SliderProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> &
-  React.PropsWithChildren<{
-    thumbStyle?: React.CSSProperties
-    trackStyle?: React.CSSProperties
-  }>
+export type SliderProps<T = number> = AriaSliderProps<T> & {
+  className?: string
+  name?: string
+  size?: number
+  thumbStyle?: React.CSSProperties
+  trackStyle?: React.CSSProperties
+}
 
-const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(
-  ({ children, thumbStyle, trackStyle, ...props }, ref) => (
-    <SliderPrimitive.Root className="relative flex w-full touch-none select-none items-center " ref={ref} {...props}>
-      <SliderPrimitive.Track className="relative h-4 w-full grow overflow-hidden rounded-full" style={trackStyle}>
-        <SliderPrimitive.Range className="absolute h-full" />
-      </SliderPrimitive.Track>
-      <SliderPrimitive.Thumb
-        className="block h-6 w-6 rounded-full border-2 border-neutral-100/10 bg-clip-padding shadow backdrop-blur focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-100/10 disabled:pointer-events-none disabled:opacity-50"
-        style={thumbStyle}
-      />
-      {children}
-    </SliderPrimitive.Root>
-  ),
-)
+export function Slider<T extends number | number[] = number>({
+  className,
+  size = 16,
+  thumbStyle,
+  trackStyle,
+  ...props
+}: SliderProps<T>) {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const numberFormatter = useNumberFormatter()
+  const state = useSliderState({ ...props, numberFormatter })
+  const { groupProps, labelProps, outputProps, trackProps } = useSlider(props, state, trackRef)
 
-Slider.displayName = SliderPrimitive.Root.displayName
+  const inputRef = useRef(null)
+  const { inputProps, isDragging, thumbProps } = useSliderThumb(
+    {
+      index: 0,
+      inputRef,
+      name: props.name,
+      trackRef,
+    },
+    state,
+  )
 
-export { Slider }
+  const { focusProps, isFocusVisible } = useFocusRing()
+  return (
+    <div {...groupProps} className={cls('flex', state.orientation === 'horizontal' && 'flex-col')}>
+      {props.label ?
+        <div className="flex justify-between">
+          <label {...labelProps}>{props.label}</label>
+          <output {...outputProps}>{state.getThumbValueLabel(0)}</output>
+        </div>
+      : null}
+      <div
+        {...trackProps}
+        className={cls('size-full', state.isDisabled ? 'opacity-50' : '', className)}
+        ref={trackRef}
+        style={{
+          ...trackProps.style,
+          ...trackStyle,
+          ...(state.orientation === 'horizontal' && { height: size }),
+          ...(state.orientation === 'vertical' && { width: size }),
+        }}
+      >
+        <div
+          {...thumbProps}
+          className={cls(
+            'rounded-full border-2 border-white',
+            isFocusVisible ? 'ring ring-neutral-500/30' : '',
+            isDragging ? 'cursor-grabbing' : 'cursor-grab',
+            state.orientation === 'horizontal' && 'h-full top-1/2',
+            state.orientation === 'vertical' && 'w-full left-1/2',
+          )}
+          style={{
+            ...thumbProps.style,
+            ...thumbStyle,
+            ...(state.orientation === 'horizontal' && { width: size }),
+            ...(state.orientation === 'vertical' && { height: size }),
+          }}
+        >
+          <VisuallyHidden>
+            <input ref={inputRef} {...mergeProps(inputProps, focusProps)} />
+          </VisuallyHidden>
+        </div>
+      </div>
+    </div>
+  )
+}

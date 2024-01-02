@@ -1,10 +1,12 @@
+'use client'
+
 import type { MutableRefObject } from 'react'
 import { useRef, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect'
 import { useWindowSize } from './use-window-size'
 
-export const useBoundingClientRect = <T extends HTMLElement>(ref: MutableRefObject<T>) => {
+export const useBoundingClientRect = <T extends HTMLElement | null>(ref: MutableRefObject<T>) => {
   useRef
   const [boundingClientRect, setBoundingClientRect] = useState<Partial<DOMRect | null>>(null)
   const windowSize = useWindowSize()
@@ -27,9 +29,9 @@ export const useBoundingClientRect = <T extends HTMLElement>(ref: MutableRefObje
     resizeObserver.observe(ref.current)
     onResize({ target: ref.current })
     return () => {
-      resizeObserver.unobserve(ref.current)
+      resizeObserver.unobserve(ref.current!)
     }
-  }, [ref, onResize, onResize])
+  }, [ref])
 
   useIsomorphicLayoutEffect(() => {
     if (!ref.current || typeof onResize !== 'function') {
@@ -39,7 +41,7 @@ export const useBoundingClientRect = <T extends HTMLElement>(ref: MutableRefObje
     onResize({
       target: ref.current,
     })
-  }, [ref, onResize, windowSize])
+  }, [ref, windowSize])
 
   return boundingClientRect
 }

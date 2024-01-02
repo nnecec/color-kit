@@ -5,8 +5,9 @@
     "build": "turbo run build",
     "changeset": "changeset",
     "clean": "turbo run clean",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter='!./apps/*'",
     "lint": "turbo run lint",
+    "play": "turbo run dev --filter=playground",
     "release": "changeset publish",
     "test": "turbo run test",
     "version": "changeset version"
@@ -15,13 +16,14 @@
     "@changesets/cli": "^2.27.1"
   },
   "devDependencies": {
-    "@nnecec/eslint-config": "^0.8.7",
-    "@nnecec/prettier-config": "^0.3.3",
+    "@next/eslint-plugin-next": "^14.1.0",
+    "@nnecec/eslint-config": "^0.8.10",
+    "@nnecec/prettier-config": "^0.4.0",
     "@nnecec/tsconfig": "^0.2.2",
-    "@turbo/gen": "^1.11.2",
+    "@turbo/gen": "^1.11.3",
     "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
-    "turbo": "^1.11.2",
+    "prettier": "^3.2.4",
+    "turbo": "^1.11.3",
     "typescript": "^5.3.3"
   },
   "packageManager": "pnpm@8.6.0"

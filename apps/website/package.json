@@ -1,25 +1,29 @@
 {
   "name": "website",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "astro": "astro",
-    "build": "astro check && astro build",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .astro",
-    "dev": "astro dev",
-    "preview": "astro preview",
-    "start": "astro dev"
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
-    "@astrojs/react": "^3.0.9",
-    "@astrojs/starlight": "^0.15.1",
-    "@astrojs/tailwind": "^5.1.0",
     "@color-kit/crystal": "workspace:*",
-    "astro": "^4.0.8",
+    "next": "~14.1.0",
+    "nextra": "^2.13.2",
+    "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sharp": "^0.33.1",
-    "tailwindcss": "^3.4.0"
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "~14.1.0",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
   }
 }

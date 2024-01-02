@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".astro/**", "dist/**", "build/**"]
+      "outputs": [".next/**", "dist/**", "build/**"]
     },
     "clean": {},
     "lint": {},

@@ -1,32 +1,53 @@
-import React, { useCallback, useRef, useState } from 'react'
+'use client'
+import React, { useCallback, useRef } from 'react'
+
+import clsx from 'clsx'
 
 import { useBoundingClientRect } from '../../hooks'
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect'
+import { usePropsValue } from '../../hooks/use-props-value'
 import { clamp } from '../../utils'
 
-interface IInteractiveProps {
-  readonly children: React.ReactNode
-  readonly onChange: (x: number, y: number) => void
+export type Rect = {
+  h: number
+  w: number
+  x: number
+  y: number
 }
 
-export const Interactive = ({}: IInteractiveProps) => {
+type Value = {
+  x: number
+  y: number
+}
+
+export type InteractiveProps = {
+  className?: string
+  defaultValue?: Value
+  onChange?: (rect: Value) => void
+  style?: React.CSSProperties
+  thumbStyle?: React.CSSProperties
+  value?: Value
+}
+
+export const Interactive = ({ defaultValue, onChange, thumbStyle, value, ...props }: InteractiveProps) => {
   const interactiveRef = useRef<HTMLDivElement>() as any
   const interactiveRect = useBoundingClientRect<HTMLDivElement>(interactiveRef)
   const thumbRef = useRef<HTMLDivElement>() as any
-  const thumbRect = useBoundingClientRect<HTMLDivElement>(thumbRef)
 
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-
+  const [position, setPosition] = usePropsValue({ defaultValue: defaultValue ?? { x: 0, y: 0 }, onChange, value })
   const onPointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
-      if (event.button !== 0) return
+      if (event.button !== 0 || !interactiveRect) return
 
-      const { height, left, top, width } = interactiveRect!
+      const { height, left, top, width } = interactiveRect
 
       const move = (event: PointerEvent | React.PointerEvent<HTMLDivElement>) => {
-        const x = clamp(event.clientX - left, 0, width)
-        const y = clamp(event.clientY - top, 0, height)
+        if (width === undefined || height === undefined || left === undefined || top === undefined) return
 
-        setPosition({ x, y })
+        const x = clamp(event.clientX - left!, 0, width)
+        const y = clamp(event.clientY - top!, 0, height)
+
+        setPosition({ x: width === 0 ? 0 : x / width, y: height === 0 ? 0 : y / height })
       }
 
       move(event)
@@ -45,12 +66,20 @@ export const Interactive = ({}: IInteractiveProps) => {
       document.addEventListener('pointermove', onPointerMove, false)
       document.addEventListener('pointerup', onPointerUp, false)
     },
-    [interactiveRect],
+    [interactiveRect, setPosition],
   )
 
   return (
-    <div className="h-20" onPointerDown={onPointerDown} ref={interactiveRef}>
-      <div ref={thumbRef} style={{ left: position.x, top: position.y }} />
+    <div {...props} className={clsx('relative', props.className)} onPointerDown={onPointerDown} ref={interactiveRef}>
+      <div
+        className="absolute z-10 block size-6 translate-x-[-50%] translate-y-[-50%] rounded-full border-2 border-neutral-100/80 shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-100/10 disabled:pointer-events-none disabled:opacity-50"
+        ref={thumbRef}
+        style={{
+          ...thumbStyle,
+          left: `${position.x * 100}%`,
+          top: `${position.y * 100}%`,
+        }}
+      />
     </div>
   )
 }

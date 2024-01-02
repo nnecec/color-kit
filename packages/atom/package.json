@@ -28,7 +28,7 @@
     "nanostores": "^0.9.5"
   },
   "devDependencies": {
-    "bunchee": "^4.2.9"
+    "bunchee": "^4.4.1"
   },
   "publishConfig": {
     "access": "public"
