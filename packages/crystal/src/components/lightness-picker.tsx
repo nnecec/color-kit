@@ -2,24 +2,24 @@ import { useLightness } from '@color-kit/react-atom'
 
 import type { SliderProps } from './ui'
 
-import { Slider } from './ui'
 import { to } from '../utils'
+import { Slider } from './ui'
 
 export const LightnessPicker = (props: SliderProps) => {
   const [lightness, setLightness] = useLightness()
 
   return (
     <Slider
-      maxValue={100}
+      maxValue={1}
       minValue={0}
-      step={1}
+      step={0.01}
       {...props}
       onChange={val => setLightness(val)}
       thumbStyle={{
-        backgroundColor: `hsl(0 0% ${lightness}% / 1)`,
+        backgroundColor: `oklch(${lightness * 100}% 0 0 / 1)`,
       }}
       trackStyle={{
-        background: `linear-gradient(${to(props.orientation)}, hsl(0 0% 0% / 1) 0%, hsl(0 0% 100% / 1) 100%)`,
+        background: `linear-gradient(${to(props.orientation)}, oklch(0% 0% 0 / 1) 0%, oklch(100% 0% 0 / 1) 100%)`,
       }}
       value={lightness}
     />

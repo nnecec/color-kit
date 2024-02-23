@@ -1,1 +1,1 @@
-export type HSL = { a: number; h: number; l: number; s: number }
+export type Color = { a: number; c: number; h: number; l: number }

@@ -5,14 +5,11 @@
     "noEmitOnError": false,
     "paths": {
       "@color-kit/atom": ["packages/atom/src"],
-      "@color-kit/color": ["packages/color/src"],
       "@color-kit/crystal": ["packages/crystal/src"],
       "@color-kit/react-atom": ["packages/react-atom/src"],
       "@color-kit/react-color": ["packages/react-color/src"],
       "@color-kit/utils": ["packages/utils/src"],
-      "@color-kit/plugin-hsl": ["plugins/plugin-hsl/src"],
-      "@color-kit/plugin-hex": ["plugins/plugin-hex/src"]
-    }
+    },
   },
-  "references": [{ "path": "packages/atom/tsconfig.json" }]
+  "references": [{ "path": "packages/atom/tsconfig.json" }],
 }

@@ -2,10 +2,8 @@ import { useStore } from '@nanostores/react'
 
 import { useColorAtomContext } from '../context'
 
-export const useSaturation = () => {
+export const useColor = () => {
   const { colorAtom } = useColorAtomContext()
 
-  const s = useStore(colorAtom.saturation)
-
-  return [s, colorAtom.saturation.set] as const
+  return useStore(colorAtom.color)
 }

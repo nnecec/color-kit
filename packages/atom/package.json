@@ -25,10 +25,10 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
-    "nanostores": "^0.9.5"
+    "nanostores": "^0.10.0"
   },
   "devDependencies": {
-    "bunchee": "^4.4.1"
+    "bunchee": "^4.4.8"
   },
   "publishConfig": {
     "access": "public"

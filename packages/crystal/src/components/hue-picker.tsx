@@ -6,7 +6,7 @@ import { to } from '../utils'
 import { Slider } from './ui'
 
 const GRADIENT_STOP = Object.entries(getHueBackground())
-  .map(([pos, color]) => `${color} ${pos}%`)
+  .map(([pos, hue]) => `oklch(50% 100% ${hue} / 1) ${pos}%`)
   .join(', ')
 
 export const HuePicker = (props: SliderProps) => {
@@ -22,7 +22,7 @@ export const HuePicker = (props: SliderProps) => {
       {...props}
       onChange={val => setHue(val)}
       thumbStyle={{
-        backgroundColor: `hsl(${hue} 100% 50% / 1)`,
+        backgroundColor: `oklch(50% 100% ${hue} / 1)`,
       }}
       trackStyle={{
         background: `linear-gradient(${to(props.orientation)},

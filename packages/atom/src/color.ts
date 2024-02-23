@@ -2,33 +2,33 @@ import type { ReadableAtom, WritableAtom } from 'nanostores'
 
 import { atom, computed } from 'nanostores'
 
-import type { HSL } from './types'
+import type { Color } from './types'
 
 export class ColorAtom {
   alpha: WritableAtom<number>
-  color: ReadableAtom<HSL>
+  chroma: WritableAtom<number>
+  color: ReadableAtom<Color>
   hue: WritableAtom<number>
   lightness: WritableAtom<number>
-  saturation: WritableAtom<number>
 
   constructor() {
-    const { alpha, hue, lightness, saturation } = this.initialize()
+    const { alpha, chroma, hue, lightness } = this.initialize()
     this.hue = hue
-    this.saturation = saturation
+    this.chroma = chroma
     this.lightness = lightness
     this.alpha = alpha
-    this.color = computed<HSL, [typeof hue, typeof saturation, typeof lightness, typeof alpha]>(
-      [hue, saturation, lightness, alpha],
-      (h, s, l, a) => ({ a, h, l, s }),
+    this.color = computed<Color, [typeof hue, typeof chroma, typeof lightness, typeof alpha]>(
+      [hue, chroma, lightness, alpha],
+      (h, c, l, a) => ({ a, c, h, l }),
     )
   }
 
   initialize() {
     return {
       alpha: atom(1),
+      chroma: atom(0.37),
       hue: atom(0),
-      lightness: atom(50),
-      saturation: atom(100),
+      lightness: atom(1),
     }
   }
 }

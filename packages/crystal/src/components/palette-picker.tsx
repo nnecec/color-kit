@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react'
 
-import { useColorAtomContext, useHue, useLightness, useSaturation } from '@color-kit/react-atom'
+import { useChroma, useColorAtomContext, useHue, useLightness } from '@color-kit/react-atom'
 
 import type { InteractiveProps } from './ui'
 
@@ -10,7 +10,7 @@ type PalettePickerProps = InteractiveProps & HTMLAttributes<HTMLDivElement>
 
 export const PalettePicker = (props: PalettePickerProps) => {
   const [hue] = useHue()
-  const [s, setS] = useSaturation()
+  const [c, setC] = useChroma()
   const [l, setL] = useLightness()
   const { thumb } = useColorAtomContext()
 
@@ -21,7 +21,7 @@ export const PalettePicker = (props: PalettePickerProps) => {
       l: (1 - y) * 100 * (1 - x * 0.5),
       s: x * 100,
     }
-    setS(nextColor.s)
+    setC(nextColor.s)
     setL(nextColor.l)
   }
 
@@ -31,17 +31,17 @@ export const PalettePicker = (props: PalettePickerProps) => {
       onChange={onChange}
       style={{
         ...props.style,
-        backgroundColor: `hsl(${hue} 100% 50%)`,
-        backgroundImage: `linear-gradient(0deg, #000, transparent),linear-gradient(90deg,#fff,hsl(0 0% 100% / 0))`,
+        backgroundColor: `oklch(50% 100% ${hue})`,
+        backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg,#fff,oklch(100% 0% 0 / 0))`,
       }}
       thumbStyle={{
-        backgroundColor: `hsl(${hue} ${s}% ${l}%)`,
+        backgroundColor: `oklch(${l}% ${c}% ${hue})`,
         height: thumb.size,
         width: thumb.size,
       }}
       value={{
-        x: s / 100,
-        y: 1 - l / 100 / (1 - (s / 100) * 0.5),
+        x: c / 100,
+        y: 1 - l / 100 / (1 - (c / 100) * 0.5),
       }}
     />
   )

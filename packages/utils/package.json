@@ -27,7 +27,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "bunchee": "^4.4.1"
+    "bunchee": "^4.4.8"
   },
   "publishConfig": {
     "access": "public"

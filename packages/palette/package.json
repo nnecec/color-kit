@@ -1,7 +1,7 @@
 {
-  "name": "@color-kit/plugin-hex",
+  "name": "@color-kit/palette",
   "version": "0.0.0",
-  "description": "The HEX plugin for color-kit",
+  "description": "The palette for color-kit",
   "keywords": [
     "color"
   ],
@@ -24,11 +24,13 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "bunchee -w"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "@color-kit/color": "workspace:*",
+  "dependencies": {
     "@color-kit/utils": "workspace:*",
-    "bunchee": "^4.4.1"
+    "culori": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/culori": "^2.1.0",
+    "bunchee": "^4.4.8"
   },
   "publishConfig": {
     "access": "public"

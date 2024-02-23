@@ -8,7 +8,6 @@
 
 ## Kits
 
-- `@color-kit/color`: A tool for manipulate, parse and convert color.
 - `@color-kit/crystal`: A series beautiful components of color picker base on headless components library `@color-kit/atom` and `@color-kit/react-atom`.
 
 ## Credits

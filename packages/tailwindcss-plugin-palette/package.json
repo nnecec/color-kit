@@ -1,7 +1,7 @@
 {
-  "name": "@color-kit/color",
+  "name": "tailwindcss-plugin-palette",
   "version": "0.0.0",
-  "description": "The color for color-kit",
+  "description": "The palette for tailwindcss",
   "keywords": [
     "color"
   ],
@@ -25,10 +25,17 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
+    "@color-kit/palette": "workspace:*",
     "@color-kit/utils": "workspace:*"
   },
   "devDependencies": {
-    "bunchee": "^4.4.1"
+    "bunchee": "^4.4.8",
+    "jest": "^29.7.0",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.4.0"
   },
   "publishConfig": {
     "access": "public"

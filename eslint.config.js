@@ -31,13 +31,10 @@ export default [
   },
   {
     files: ['apps/**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      'tailwindcss/no-custom-classname': [
-        'error',
-        {
-          config: './apps/playground/tailwind.config.ts',
-        },
-      ],
+    settings: {
+      tailwindcss: {
+        config: './apps/playground/tailwind.config.ts',
+      },
     },
   },
 ]
