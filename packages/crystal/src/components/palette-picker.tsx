@@ -9,6 +9,7 @@ import { Interactive } from './ui'
 type PalettePickerProps = InteractiveProps & HTMLAttributes<HTMLDivElement>
 
 export const PalettePicker = (props: PalettePickerProps) => {
+  const { size } = props
   const [hue] = useHue()
   const [c, setC] = useChroma()
   const [l, setL] = useLightness()
@@ -36,8 +37,8 @@ export const PalettePicker = (props: PalettePickerProps) => {
       }}
       thumbStyle={{
         backgroundColor: `oklch(${l}% ${c}% ${hue})`,
-        height: thumb.size,
-        width: thumb.size,
+        height: size ?? thumb.size,
+        width: size ?? thumb.size,
       }}
       value={{
         x: c / 100,

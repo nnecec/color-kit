@@ -12,6 +12,7 @@ export const AlphaPicker = (props: SliderProps) => {
 
   return (
     <Slider
+      aria-label="alpha picker"
       maxValue={1}
       minValue={0}
       size={thumb.size}

@@ -15,6 +15,7 @@ export const HuePicker = (props: SliderProps) => {
 
   return (
     <Slider
+      aria-label="hue picker"
       maxValue={360}
       minValue={0}
       size={thumb.size}

@@ -4,7 +4,6 @@ import React, { useCallback, useRef } from 'react'
 import clsx from 'clsx'
 
 import { useBoundingClientRect } from '../../hooks'
-import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect'
 import { usePropsValue } from '../../hooks/use-props-value'
 import { clamp } from '../../utils'
 
@@ -24,6 +23,7 @@ export type InteractiveProps = {
   className?: string
   defaultValue?: Value
   onChange?: (rect: Value) => void
+  size?: number
   style?: React.CSSProperties
   thumbStyle?: React.CSSProperties
   value?: Value
