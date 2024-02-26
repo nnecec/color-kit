@@ -30,7 +30,7 @@
   "devDependencies": {
     "@nanostores/react": "^0.7.2",
     "@nnecec/tsconfig": "^0.2.2",
-    "@types/react": "^18.2.57",
+    "@types/react": "^18.2.58",
     "bunchee": "^4.4.8"
   },
   "publishConfig": {

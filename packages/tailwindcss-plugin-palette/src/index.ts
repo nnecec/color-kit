@@ -72,7 +72,7 @@ const palettePlugin = plugin.withOptions(
       addVariant('supports-grid', '@supports (display: grid)')
     }
   },
-  function (options) {
+  function () {
     /**
      * Provide default values
      */

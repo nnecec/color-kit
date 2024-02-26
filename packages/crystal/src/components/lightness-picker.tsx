@@ -10,6 +10,7 @@ export const LightnessPicker = (props: SliderProps) => {
 
   return (
     <Slider
+      aria-label="lightness picker"
       maxValue={1}
       minValue={0}
       step={0.01}

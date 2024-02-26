@@ -5,10 +5,14 @@ import { atom, computed } from 'nanostores'
 import type { Color } from './types'
 
 export class ColorAtom {
+  /** [0, 1] */
   alpha: WritableAtom<number>
+  /** [0, 100] */
   chroma: WritableAtom<number>
   color: ReadableAtom<Color>
+  /** [0, 360] */
   hue: WritableAtom<number>
+  /** [0, 100] */
   lightness: WritableAtom<number>
 
   constructor() {
@@ -26,9 +30,9 @@ export class ColorAtom {
   initialize() {
     return {
       alpha: atom(1),
-      chroma: atom(0.37),
+      chroma: atom(100),
       hue: atom(0),
-      lightness: atom(1),
+      lightness: atom(50),
     }
   }
 }

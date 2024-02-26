@@ -11,6 +11,7 @@ export const ChromaPicker = (props: SliderProps) => {
 
   return (
     <Slider
+      aria-label="chroma picker"
       maxValue={100}
       minValue={0}
       step={1}
