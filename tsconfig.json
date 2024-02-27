@@ -1,6 +1,7 @@
 {
   "extends": "@nnecec/tsconfig/react.json",
   "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022", "ESNext"],
     "baseUrl": ".",
     "noEmitOnError": false,
     "paths": {
@@ -9,7 +10,8 @@
       "@color-kit/react-atom": ["packages/react-atom/src"],
       "@color-kit/react-color": ["packages/react-color/src"],
       "@color-kit/utils": ["packages/utils/src"],
-    },
+      "@color-kit/palette": ["packages/palette/src"]
+    }
   },
-  "references": [{ "path": "packages/atom/tsconfig.json" }],
+  "references": [{ "path": "packages/atom/tsconfig.json" }]
 }

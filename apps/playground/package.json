@@ -9,13 +9,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@color-kit/palette": "workspace:*",
     "@color-kit/crystal": "workspace:*",
     "@nextui-org/react": "^2.2.9",
     "framer-motion": "^11.0.6",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.50.1"
+    "react-hook-form": "^7.50.1",
+    "culori": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
