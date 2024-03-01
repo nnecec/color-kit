@@ -1,12 +1,42 @@
-import type { Options } from './types'
+import type { Options, Palette } from './types'
 
-import { createShade } from './shade'
-import { createGraySwatches, createSwatches } from './swatch'
+import { createPaletteOptions } from './build-option'
+import { createShades } from './shade'
+import { createSwatch } from './swatch'
 
-export function palx(shadesLike: [string, string][], options?: Options) {
-  const shades = shadesLike.map(([name, value]) => createShade(name, value))
+/**
+ * palx(['red', '#f00'], {
+ *    primary: '#fde',
+ *    steps: 10 | [50, 100],
+ *    l: {
+ *      start: 0,
+ *      end: 0,
+ *      shift: 0,
+ *      curve: 'linear'
+ *    },
+ *    c: {
+ *      start: 0,
+ *      end: 0,
+ *      shift: 0,
+ *      curve: 'linear'
+ *    },
+ *    h: {
+ *      start: 0,
+ *      end: 0,
+ *      shift: 0
+ *      curve: 'linear'
+ *    },
+ * })
+ *
+ *
+ * @param swatchLike
+ * @param options
+ * @returns
+ */
+export function palx(swatchLike: [string, string][], options?: Partial<Options>) {
+  const swatches = swatchLike.map(([name, value]) => createSwatch(name, value))
 
-  const { colorful, gray } = Object.groupBy(shades, shade => {
+  const { colorful, gray } = Object.groupBy(swatches, shade => {
     const { color } = shade
     if (!color) {
       return 'none'
@@ -17,23 +47,24 @@ export function palx(shadesLike: [string, string][], options?: Options) {
     }
   })
 
-  const palette = []
+  const palette: Palette[] = []
+
+  const paletteOptions = createPaletteOptions(options)
 
   if (colorful) {
     for (const shade of colorful) {
-      palette.push({ color: shade.color, name: shade.name, swatches: createSwatches(shade, options?.stops) })
+      palette.push({ name: shade.name, shades: createShades(shade.color, paletteOptions) })
     }
   }
 
-  if (gray) {
-    for (const shade of gray) {
-      palette.push({
-        color: shade.color,
-        name: shade.name,
-        swatches: createGraySwatches(shade, options?.primary ?? undefined, options?.stops),
-      })
-    }
-  }
+  // if (gray) {
+  //   for (const shade of gray) {
+  //     palette.push({
+  //       name: shade.name,
+  //       shades: createGrayShades(shade, options?.primary ?? undefined, options?.steps),
+  //     })
+  //   }
+  // }
 
   return palette
 }

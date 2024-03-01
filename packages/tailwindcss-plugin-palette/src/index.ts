@@ -26,7 +26,7 @@ const palettePlugin = plugin.withOptions(
 
     const palette = palx(map, {
       primary,
-      stops: DEFAULT_STOPS.map(stop => stop / 1000),
+      steps: DEFAULT_STOPS.map(stop => stop / 1000),
     }) as unknown as any
 
     return {

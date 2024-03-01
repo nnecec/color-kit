@@ -21,10 +21,30 @@ export default function PalettePage() {
 
   const palette = palx(map, {
     primary: undefined,
-    stops: DEFAULT_STOPS.map(stop => stop / 1000),
-  }) as unknown as any
+    steps: DEFAULT_STOPS.map(stop => stop / 1000),
+  })
 
-  console.log(palette)
+  // console.log(palette)
 
-  return <div className="h-screen w-screen">Palette</div>
+  return (
+    <div className="h-screen w-screen">
+      Palette
+      {palette.map(p => (
+        <div key={p.name}>
+          {p.name}
+          <div className="flex gap-1">
+            {p.shades.map(shade => (
+              <div
+                className="size-5"
+                key={shade.stop}
+                style={{
+                  backgroundColor: `oklch(${shade.l} ${shade.c} ${shade.h})`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }

@@ -25,8 +25,8 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
-    "nanostores": "^0.10.0",
-    "@color-kit/utils": "workspace:*"
+    "@color-kit/utils": "workspace:*",
+    "nanostores": "^0.10.0"
   },
   "devDependencies": {
     "bunchee": "^4.4.8"
