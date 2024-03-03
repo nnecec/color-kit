@@ -1,7 +1,9 @@
-import type { Color, Oklch } from 'culori'
+import type { Color, Oklch as CuloriOklch } from 'culori'
+
+import type { Easing, EasingKey } from './easing'
 
 export type Shade = Oklch & {
-  stop: number
+  step: number
 }
 
 export type Swatch = {
@@ -9,9 +11,9 @@ export type Swatch = {
   name: string
 }
 
-export type CurveType = number[] | string
 export type ColorOptions = {
-  curve: CurveType
+  base: number
+  easing: Easing | EasingKey
   /** default: 1 */
   end: number
   /** default: 0 */
@@ -32,3 +34,7 @@ export type Palette = {
   name: string
   shades: Shade[]
 }
+
+export { type Easing } from './easing'
+
+export type Oklch = Required<Pick<CuloriOklch, 'c' | 'h' | 'l'>>

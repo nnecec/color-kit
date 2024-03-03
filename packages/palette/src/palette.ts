@@ -1,6 +1,6 @@
 import type { Options, Palette } from './types'
 
-import { createPaletteOptions } from './build-option'
+import { createOptions } from './build-option'
 import { createShades } from './shade'
 import { createSwatch } from './swatch'
 
@@ -40,7 +40,7 @@ export function palx(swatchLike: [string, string][], options?: Partial<Options>)
     const { color } = shade
     if (!color) {
       return 'none'
-    } else if (color.c > 0.04) {
+    } else if (color.c > 0.05) {
       return 'colorful'
     } else {
       return 'gray'
@@ -49,10 +49,11 @@ export function palx(swatchLike: [string, string][], options?: Partial<Options>)
 
   const palette: Palette[] = []
 
-  const paletteOptions = createPaletteOptions(options)
+  const paletteOptions = createOptions(options)
 
   if (colorful) {
     for (const shade of colorful) {
+      console.log(shade.name, shade.color, createShades(shade.color, paletteOptions))
       palette.push({ name: shade.name, shades: createShades(shade.color, paletteOptions) })
     }
   }

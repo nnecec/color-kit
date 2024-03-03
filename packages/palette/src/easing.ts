@@ -1,10 +1,8 @@
 type EasingFunction = (progress: number) => number
 
-export type Easing = EasingFunction | keyof typeof easings
+export type EasingKey = keyof typeof easings
 
-interface EasingDictionary {
-  [easing: string]: EasingFunction
-}
+export type Easing = EasingFunction | EasingKey
 
 const pow = Math.pow
 const sqrt = Math.sqrt
@@ -17,7 +15,8 @@ const c3 = c1 + 1
 const c4 = (2 * PI) / 3
 const c5 = (2 * PI) / 4.5
 
-const bounceOut: EasingFunction = function (x) {
+// https://easings.net/
+const bounceOut: EasingFunction = (x: number) => {
   const n1 = 7.5625
   const d1 = 2.75
 
@@ -32,44 +31,44 @@ const bounceOut: EasingFunction = function (x) {
   }
 }
 
-export const easings: EasingDictionary = {
-  easeInBack: function (x) {
+export const easings = {
+  easeInBack: (x: number) => {
     return c3 * x * x * x - c1 * x * x
   },
-  easeInBounce: function (x) {
+  easeInBounce: (x: number) => {
     return 1 - bounceOut(1 - x)
   },
-  easeInCirc: function (x) {
+  easeInCirc: (x: number) => {
     return 1 - sqrt(1 - pow(x, 2))
   },
-  easeInCubic: function (x) {
+  easeInCubic: (x: number) => {
     return x * x * x
   },
-  easeInElastic: function (x) {
+  easeInElastic: (x: number) => {
     return (
       x === 0 ? 0
       : x === 1 ? 1
       : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4)
     )
   },
-  easeInExpo: function (x) {
+  easeInExpo: (x: number) => {
     return x === 0 ? 0 : pow(2, 10 * x - 10)
   },
-  easeInOutBack: function (x) {
+  easeInOutBack: (x: number) => {
     return x < 0.5 ?
         (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
       : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
   },
-  easeInOutBounce: function (x) {
+  easeInOutBounce: (x: number) => {
     return x < 0.5 ? (1 - bounceOut(1 - 2 * x)) / 2 : (1 + bounceOut(2 * x - 1)) / 2
   },
-  easeInOutCirc: function (x) {
+  easeInOutCirc: (x: number) => {
     return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2
   },
-  easeInOutCubic: function (x) {
+  easeInOutCubic: (x: number) => {
     return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2
   },
-  easeInOutElastic: function (x) {
+  easeInOutElastic: (x: number) => {
     return (
       x === 0 ? 0
       : x === 1 ? 1
@@ -77,7 +76,7 @@ export const easings: EasingDictionary = {
       : (pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5)) / 2 + 1
     )
   },
-  easeInOutExpo: function (x) {
+  easeInOutExpo: (x: number) => {
     return (
       x === 0 ? 0
       : x === 1 ? 1
@@ -85,61 +84,61 @@ export const easings: EasingDictionary = {
       : (2 - pow(2, -20 * x + 10)) / 2
     )
   },
-  easeInOutQuad: function (x) {
+  easeInOutQuad: (x: number) => {
     return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2
   },
-  easeInOutQuart: function (x) {
+  easeInOutQuart: (x: number) => {
     return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2
   },
-  easeInOutQuint: function (x) {
+  easeInOutQuint: (x: number) => {
     return x < 0.5 ? 16 * x * x * x * x * x : 1 - pow(-2 * x + 2, 5) / 2
   },
-  easeInOutSine: function (x) {
+  easeInOutSine: (x: number) => {
     return -(cos(PI * x) - 1) / 2
   },
-  easeInQuad: function (x) {
+  easeInQuad: (x: number) => {
     return x * x
   },
-  easeInQuart: function (x) {
+  easeInQuart: (x: number) => {
     return x * x * x * x
   },
-  easeInQuint: function (x) {
+  easeInQuint: (x: number) => {
     return x * x * x * x * x
   },
-  easeInSine: function (x) {
+  easeInSine: (x: number) => {
     return 1 - cos((x * PI) / 2)
   },
-  easeOutBack: function (x) {
+  easeOutBack: (x: number) => {
     return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2)
   },
   easeOutBounce: bounceOut,
-  easeOutCirc: function (x) {
+  easeOutCirc: (x: number) => {
     return sqrt(1 - pow(x - 1, 2))
   },
-  easeOutCubic: function (x) {
+  easeOutCubic: (x: number) => {
     return 1 - pow(1 - x, 3)
   },
-  easeOutElastic: function (x) {
+  easeOutElastic: (x: number) => {
     return (
       x === 0 ? 0
       : x === 1 ? 1
       : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
     )
   },
-  easeOutExpo: function (x) {
+  easeOutExpo: (x: number) => {
     return x === 1 ? 1 : 1 - pow(2, -10 * x)
   },
-  easeOutQuad: function (x) {
+  easeOutQuad: (x: number) => {
     return 1 - (1 - x) * (1 - x)
   },
-  easeOutQuart: function (x) {
+  easeOutQuart: (x: number) => {
     return 1 - pow(1 - x, 4)
   },
-  easeOutQuint: function (x) {
+  easeOutQuint: (x: number) => {
     return 1 - pow(1 - x, 5)
   },
-  easeOutSine: function (x) {
+  easeOutSine: (x: number) => {
     return sin((x * PI) / 2)
   },
-  linear: x => x,
+  linear: (x: number) => x,
 }

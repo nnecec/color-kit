@@ -1,27 +1,17 @@
 import type { ColorOptions, Options } from './types'
 
-export const createShadeOptions = (defaultOptions: ColorOptions, start: number, end: number): ColorOptions => {
-  return {
-    ...defaultOptions,
-    end: defaultOptions.end ? defaultOptions.end * end : end,
-    start: defaultOptions.start ? defaultOptions.start * start : start,
-  }
-}
-
-export const createPaletteOptions = (options?: Partial<Options>): Options => {
-  const baseOptions: ColorOptions = {
+export const createOptions = (options?: Partial<Options>): Options => {
+  const baseOptions = {
     ...options,
-    curve: 'linear',
-    end: 1,
+    easing: 'easeInQuad',
     shift: 0,
-    start: 0,
-  }
+  } as ColorOptions
 
   return {
     steps: 10,
     ...baseOptions,
-    c: createShadeOptions({ ...baseOptions, ...options?.c }, 0, 1),
-    h: createShadeOptions({ ...baseOptions, ...options?.h }, 0, 360),
-    l: createShadeOptions({ ...baseOptions, ...options?.l }, 0, 1),
+    c: { ...baseOptions, end: 1, start: 0.01, ...options?.c },
+    h: { ...baseOptions, ...options?.h },
+    l: { ...baseOptions, end: 0.05, start: 0.99, ...options?.l },
   }
 }
