@@ -13,5 +13,5 @@
       "@color-kit/palette": ["packages/palette/src"]
     }
   },
-  "references": [{ "path": "packages/atom/tsconfig.json" }]
+  "include": ["packages/**/*", "tools/**/*", "apps/**/*"]
 }

@@ -138,6 +138,9 @@ importers:
       '@color-kit/utils':
         specifier: workspace:*
         version: link:../utils
+      '@material/material-color-utilities':
+        specifier: ^0.2.7
+        version: 0.2.7
       culori:
         specifier: ^4.0.1
         version: 4.0.1
@@ -1213,6 +1216,10 @@ packages:
       fs-extra: 8.1.0
       globby: 11.1.0
       read-yaml-file: 1.1.0
+    dev: false
+
+  /@material/material-color-utilities@0.2.7:
+    resolution: {integrity: sha512-0FCeqG6WvK4/Cc06F/xXMd/pv4FeisI0c1tUpBbfhA2n9Y8eZEv4Karjbmf2ZqQCPUWMrGp8A571tCjizxoTiQ==}
     dev: false
 
   /@nanostores/react@0.7.2(nanostores@0.10.0)(react@18.2.0):

@@ -1,40 +1,44 @@
-import type { Color, Oklch as CuloriOklch } from 'culori'
+import type { Hct } from '@material/material-color-utilities'
 
 import type { Easing, EasingKey } from './easing'
 
-export type Shade = Oklch & {
+export type Shade = Color & {
   step: number
 }
 
 export type Swatch = {
-  color: Oklch
+  color: string // hex
   name: string
 }
 
 export type ColorOptions = {
   base: number
-  easing: Easing | EasingKey
   /** default: 1 */
   end: number
   /** default: 0 */
-  shift: number
+  shift?: number
   /** default: 0 */
   start: number
 }
 
 export type Options = {
-  c: ColorOptions
-  h: ColorOptions
-  l: ColorOptions
-  primary?: Color | string
+  primary?: unknown
+  /** from 0 to 100 */
   steps: number | number[]
 } & Partial<ColorOptions>
 
+export type ParsedOptions = {
+  primary?: string
+  steps: number[]
+}
+
 export type Palette = {
   name: string
-  shades: Shade[]
+  shades: any[]
 }
 
 export { type Easing } from './easing'
 
-export type Oklch = Required<Pick<CuloriOklch, 'c' | 'h' | 'l'>>
+export type Color = Hct
+
+export type SwatchLike = [string, string][] | { [key: string]: string }

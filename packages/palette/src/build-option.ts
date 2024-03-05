@@ -1,17 +1,22 @@
-import type { ColorOptions, Options } from './types'
+import type { Options, ParsedOptions } from './types'
 
-export const createOptions = (options?: Partial<Options>): Options => {
-  const baseOptions = {
-    ...options,
+import { toColor } from './utils'
+
+export const createOptions = (options?: Partial<Options>): ParsedOptions => {
+  const base = {
     easing: 'easeInQuad',
     shift: 0,
-  } as ColorOptions
+    steps: options?.steps ?? 10,
+  }
+
+  const steps =
+    Array.isArray(base.steps) ?
+      base.steps
+    : Array.from({ length: base.steps }).map((_, i) => i / (base.steps as number))
 
   return {
-    steps: 10,
-    ...baseOptions,
-    c: { ...baseOptions, end: 1, start: 0.01, ...options?.c },
-    h: { ...baseOptions, ...options?.h },
-    l: { ...baseOptions, end: 0.05, start: 0.99, ...options?.l },
+    ...base,
+    primary: options?.primary ? toColor(options?.primary as any) : undefined,
+    steps,
   }
 }

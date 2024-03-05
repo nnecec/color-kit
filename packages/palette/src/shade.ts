@@ -1,28 +1,15 @@
-import type { ColorOptions, Oklch, Options, Shade } from './types'
+import { Blend, Hct, TonalPalette, argbFromHex, hexFromArgb } from '@material/material-color-utilities'
 
-import { easings } from './easing'
+import type { ParsedOptions } from './types'
 
-function createEasing(options: ColorOptions): (step: number) => number {
-  const easing = typeof options?.easing === 'function' ? options?.easing : easings[options?.easing ?? 'easeInOutCubic']
-  return (step: number) => easing!(step)
-}
+export function createShades(hex: string, options: ParsedOptions) {
+  const { primary, steps } = options
 
-export function createShades(color: Oklch, options: Options) {
-  const { c, h, l, steps } = options
+  const argb = primary ? Blend.harmonize(argbFromHex(hex), argbFromHex(primary)) : argbFromHex(hex)
 
-  const lEasing = createEasing(l)
-  const cEasing = createEasing(c)
-  const hEasing = createEasing(h)
+  const hct = Hct.fromInt(argb)
 
-  const stepsArray = Array.isArray(steps) ? steps : Array.from({ length: steps }).map((_, i) => i / steps)
+  const palette = TonalPalette.fromHueAndChroma(hct.hue, hct.chroma)
 
-  return stepsArray.map(
-    step =>
-      ({
-        c: c.start + cEasing(step) * (c.end - c.start),
-        h: color.h,
-        l: l.start + lEasing(step) * (l.end - l.start),
-        step,
-      }) as Shade,
-  )
+  return steps.map(step => hexFromArgb(palette.tone(step)))
 }

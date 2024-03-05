@@ -1,17 +1,12 @@
-import type { Color } from 'culori'
-
 import type { Swatch } from './types'
 
-import { oklch } from './utils'
+import { toColor } from './utils'
 
-export function createSwatch(name: string, color: Color | string): Swatch {
-  const oklchColor = oklch(color)!
+export function createSwatch(name: string, color: any): Swatch | null {
+  const hex = toColor(color)!
+
   return {
-    color: {
-      c: oklchColor.c!,
-      h: oklchColor.h!,
-      l: oklchColor.l!,
-    },
+    color: hex,
     name,
   }
 }
