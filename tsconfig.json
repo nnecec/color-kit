@@ -8,9 +8,9 @@
       "@color-kit/atom": ["packages/atom/src"],
       "@color-kit/crystal": ["packages/crystal/src"],
       "@color-kit/react-atom": ["packages/react-atom/src"],
-      "@color-kit/react-color": ["packages/react-color/src"],
       "@color-kit/utils": ["packages/utils/src"],
-      "@color-kit/palette": ["packages/palette/src"]
+      "@color-kit/palette": ["packages/palette/src"],
+      "tailwind-plugin-palette": ["packages/tailwind-plugin-palette/src"]
     }
   },
   "include": ["packages/**/*", "tools/**/*", "apps/**/*"]

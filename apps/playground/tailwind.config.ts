@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss'
 
+import palette from 'tailwind-plugin-palette'
+
 import { nextui } from '@nextui-org/react'
 
 const config: Config = {
@@ -10,10 +12,7 @@ const config: Config = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     '../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
-  daisyui: {
-    themes: ['dark'],
-  },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [nextui(), palette({})],
 }
 export default config

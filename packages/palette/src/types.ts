@@ -1,8 +1,7 @@
 import type { Hct } from '@material/material-color-utilities'
 
-import type { Easing, EasingKey } from './easing'
-
-export type Shade = Color & {
+export type Shade = {
+  color: string
   step: number
 }
 
@@ -11,7 +10,7 @@ export type Swatch = {
   name: string
 }
 
-export type ColorOptions = {
+type ColorOptions = {
   base: number
   /** default: 1 */
   end: number
@@ -34,7 +33,7 @@ export type ParsedOptions = {
 
 export type Palette = {
   name: string
-  shades: any[]
+  shades: Shade[]
 }
 
 export { type Easing } from './easing'

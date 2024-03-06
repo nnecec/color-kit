@@ -15,8 +15,8 @@ export class ColorAtom {
   /** [0, 100] */
   lightness: WritableAtom<number>
 
-  constructor({ a, c, h, l }: Color) {
-    const { alpha, chroma, hue, lightness } = this.initialize({ a, c, h, l })
+  constructor(oklch?: Color) {
+    const { alpha, chroma, hue, lightness } = this.initialize(oklch)
     this.hue = hue
     this.chroma = chroma
     this.lightness = lightness
@@ -27,7 +27,8 @@ export class ColorAtom {
     )
   }
 
-  initialize({ a, c, h, l }: Color) {
+  initialize(color?: Color) {
+    const { a, c, h, l } = color ?? {}
     return {
       alpha: atom(a ?? 1),
       chroma: atom(c ?? 100),

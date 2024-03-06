@@ -25,7 +25,6 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
-    "@color-kit/utils": "workspace:*",
     "@material/material-color-utilities": "^0.2.7",
     "culori": "^4.0.1"
   },

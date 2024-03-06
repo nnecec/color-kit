@@ -16,10 +16,10 @@
     "@changesets/cli": "^2.27.1"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.1.0",
-    "@nnecec/eslint-config": "^0.9.2",
+    "@next/eslint-plugin-next": "^14.1.2",
+    "@nnecec/eslint-config": "^0.9.3",
     "@nnecec/prettier-config": "^0.4.1",
-    "@nnecec/tsconfig": "^0.2.2",
+    "@nnecec/tsconfig": "^0.2.3",
     "@turbo/gen": "^1.12.4",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
