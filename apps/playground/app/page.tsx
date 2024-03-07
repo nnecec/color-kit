@@ -27,39 +27,35 @@ function toSteps(interval?: number | number[]) {
 }
 
 type DefaultColorsKeys = keyof DefaultColors
-type DefaultColorsMaps = keyof DefaultColors[DefaultColorsKeys]
+
+const map = Object.fromEntries(
+  Object.keys(colors)
+    .map(color => {
+      if (['blueGray', 'coolGray', 'lightBlue', 'trueGray', 'warmGray'].includes(color)) return null
+
+      const middleColor = colors[color as DefaultColorsKeys][500]
+      if (middleColor) {
+        return [color, middleColor] as [string, string]
+      }
+      return null
+    })
+    .filter(Boolean),
+)
 
 export default function PalettePage() {
-  const { colors: customColors, interval, primary } = {} as any
-
-  let colorMap =
-    Array.isArray(customColors) ?
-      Object.entries(customColors)
-    : Object.keys(colors)
-        .map(color => {
-          if (['blueGray', 'coolGray', 'lightBlue', 'trueGray', 'warmGray'].includes(color)) return null
-
-          const middleColor =
-            colors[color as DefaultColorsKeys][
-              typeof customColors === 'number' ? (customColors as DefaultColorsMaps) : 500
-            ]
-          if (middleColor) {
-            return [color, middleColor] as [string, string]
-          }
-          return null
-        })
-        .filter(Boolean)
+  const { interval, primary } = {} as any
 
   const steps = toSteps(interval)
 
-  const palette = createPalette(colorMap, {
-    primary,
+  const palette = createPalette(map, {
+    primary: '#845EC2',
     steps: steps.map(value => value / 10).toReversed(),
+    dark: true,
   })
 
   return (
     <div className="h-screen w-screen">
-      tailwind-plugin-palette
+      <h1 className="text-xl">tailwind-plugin-palette</h1>
       {palette.map(swatch => (
         <div key={swatch.name}>
           <div className="flex gap-1">

@@ -2,5 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+:root {
+  --slate: #ff0000;
 }

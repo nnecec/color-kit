@@ -21,18 +21,23 @@ type ColorOptions = {
 }
 
 export type Options = {
+  /** Provide a primary color */
   primary?: unknown
-  /** from 0 to 100 */
+  /** Minimum 0 to maximum 100 */
   steps: number | number[]
+  /** Also generate dark mode palette */
+  dark?: boolean
 } & Partial<ColorOptions>
 
 export type ParsedOptions = {
   primary?: string
   steps: number[]
+  dark: boolean
 }
 
 export type Palette = {
   name: string
+  default?: string
   shades: Shade[]
 }
 
@@ -40,4 +45,4 @@ export { type Easing } from './easing'
 
 export type Color = Hct
 
-export type SwatchLike = [string, string][] | { [key: string]: string }
+export type SwatchLike = Record<string, string>

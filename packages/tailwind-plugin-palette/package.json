@@ -1,5 +1,5 @@
 {
-  "name": "@color-kit/tailwind-plugin-palette",
+  "name": "tailwind-plugin-palette",
   "version": "0.0.0",
   "description": "The palette for tailwindcss",
   "keywords": [
@@ -23,8 +23,7 @@
     "dev": "bunchee -w"
   },
   "dependencies": {
-    "@color-kit/palette": "workspace:*",
-    "@color-kit/utils": "workspace:*"
+    "@color-kit/palette": "workspace:*"
   },
   "devDependencies": {
     "bunchee": "^4.4.8",

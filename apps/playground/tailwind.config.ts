@@ -13,6 +13,6 @@ const config: Config = {
     '../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   darkMode: 'class',
-  plugins: [nextui(), palette({})],
+  plugins: [nextui(), palette()],
 }
 export default config

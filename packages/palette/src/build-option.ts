@@ -7,6 +7,7 @@ export const createOptions = (options?: Partial<Options>): ParsedOptions => {
     easing: 'easeInQuad',
     shift: 0,
     steps: options?.steps ?? 10,
+    dark: options?.dark ?? false,
   }
 
   const steps =

@@ -1,7 +1,6 @@
 {
   "extends": "@nnecec/tsconfig/react.json",
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022", "ESNext"],
     "baseUrl": ".",
     "noEmitOnError": false,
     "paths": {
