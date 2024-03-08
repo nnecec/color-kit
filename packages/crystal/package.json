@@ -32,7 +32,7 @@
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.63",
+    "@types/react": "^18.2.64",
     "bunchee": "^4.4.8"
   },
   "publishConfig": {
