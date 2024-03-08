@@ -6,11 +6,6 @@ import { createOptions } from './build-option'
 import { createShades } from './shade'
 import { createSwatch } from './swatch'
 
-/**
- * @param swatchLike
- * @param options
- * @returns
- */
 export function createPalette(swatchLike: SwatchLike, options?: Partial<Options>) {
   const swatchesArray = Array.isArray(swatchLike) ? swatchLike : Object.entries(swatchLike)
   const swatches = swatchesArray.map(([name, value]) => createSwatch(name, value) ?? null).filter(Boolean)

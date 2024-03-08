@@ -33,7 +33,7 @@ export default [
     files: ['apps/**/*.{js,jsx,ts,tsx}'],
     settings: {
       tailwindcss: {
-        config: './apps/playground/tailwind.config.ts',
+        config: './apps/showcase/tailwind.config.ts',
       },
     },
   },

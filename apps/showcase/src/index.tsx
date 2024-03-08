@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client'
 import App from './app'
 
 // fonts
-import './lib/styles/globals.css'
+import './styles/globals.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 root.render(
