@@ -8,6 +8,30 @@ import plugin from 'tailwindcss/plugin'
 import { createPalette } from '@color-kit/palette'
 
 const DEFAULT_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+const DEFAULT_COLOR_KEYS = [
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+]
 type DefaultColorsKeys = keyof DefaultColors
 
 type Options = {
@@ -54,20 +78,13 @@ const palettePlugin = plugin.withOptions(
     const colors =
       typeof customColors === 'number' || !customColors ?
         Object.fromEntries(
-          Object.keys(tailwindColors)
-            .map(colorName => {
-              if (['blueGray', 'coolGray', 'lightBlue', 'trueGray', 'warmGray'].includes(colorName)) return null
-
-              const color =
-                tailwindColors[colorName as DefaultColorsKeys][
-                  (customColors as keyof DefaultColors[DefaultColorsKeys]) ?? 500
-                ]
-              if (color) {
-                return [colorName, color] as [string, string]
-              }
-              return null
-            })
-            .filter(Boolean),
+          DEFAULT_COLOR_KEYS.map(colorName => {
+            const color =
+              tailwindColors[colorName as DefaultColorsKeys][
+                (customColors as keyof DefaultColors[DefaultColorsKeys]) ?? 500
+              ]!
+            return [colorName, color] as [string, string]
+          }).filter(Boolean),
         )
       : customColors
 
@@ -86,7 +103,10 @@ const palettePlugin = plugin.withOptions(
           ...Object.fromEntries(
             palette.map(swatch => [
               swatch.name,
-              Object.fromEntries(swatch.shades.map((shade, i) => [steps[i], shade.color])),
+              {
+                DEFAULT: swatch.default,
+                ...Object.fromEntries(swatch.shades.map((shade, i) => [steps[i], shade.color])),
+              },
             ]),
           ),
         },
@@ -101,7 +121,10 @@ const palettePlugin = plugin.withOptions(
           ...Object.fromEntries(
             palette.map(swatch => [
               swatch.name,
-              Object.fromEntries(swatch.shades.map((shade, i) => [steps[i], shade.color])),
+              {
+                DEFAULT: swatch.default,
+                ...Object.fromEntries(swatch.shades.map((shade, i) => [steps[i], shade.color])),
+              },
             ]),
           ),
         },

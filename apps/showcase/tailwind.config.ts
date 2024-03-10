@@ -19,3 +19,9 @@ export default {
   ],
   theme: {},
 } satisfies Config
+
+console.log(
+  palette({
+    primary: '#F6B894',
+  }),
+)

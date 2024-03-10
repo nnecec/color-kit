@@ -16,17 +16,9 @@ import { MoonFilledIcon, SunFilledIcon } from '@nextui-org/shared-icons'
 
 export const FloatingComponents = () => {
   return (
-    <div className="relative z-20 hidden w-1/2 flex-col lg:flex">
-      <>
-        <Switch
-          classNames={{
-            startContent: 'text-white',
-            wrapper: 'shadow-sm',
-          }}
-          endContent={<MoonFilledIcon />}
-          size="lg"
-          startContent={<SunFilledIcon />}
-        />
+    <div className="relative z-20 w-1/2 flex-col lg:flex">
+      <div className="flex flex-wrap">
+        <Switch endContent={<MoonFilledIcon />} size="lg" startContent={<SunFilledIcon />} />
 
         <Input
           className="w-[200px]"
@@ -52,6 +44,8 @@ export const FloatingComponents = () => {
           </CardFooter>
         </Card>
 
+        <Button color="primary">Hello</Button>
+
         <Tabs
           aria-label="Floating tabs example"
           className=""
@@ -76,8 +70,8 @@ export const FloatingComponents = () => {
             classNames={{
               base: 'rounded-xl',
             }}
-            initialPage={6}
-            isCompact
+            color="primary"
+            initialPage={2}
             showControls
             showShadow
             total={10}
@@ -119,7 +113,7 @@ export const FloatingComponents = () => {
             </Button>
           </CardFooter>
         </Card>
-      </>
+      </div>
     </div>
   )
 }
