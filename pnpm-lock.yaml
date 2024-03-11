@@ -161,9 +161,6 @@ importers:
 
   packages/atom:
     dependencies:
-      '@color-kit/utils':
-        specifier: workspace:*
-        version: link:../utils
       nanostores:
         specifier: ^0.10.0
         version: 0.10.0
@@ -250,12 +247,6 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1
-
-  packages/utils:
-    devDependencies:
-      bunchee:
-        specifier: ^4.4.8
-        version: 4.4.8(typescript@5.4.2)
 
 packages:
 

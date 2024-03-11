@@ -9,10 +9,12 @@
 ## Kits
 
 - `@color-kit/crystal`: A series beautiful components of color picker base on headless components library `@color-kit/atom` and `@color-kit/react-atom`.
+- `@color-kit/palette`: A color palette generator.
+- `tailwind-plugin-palette`: A tailwind plugin designed for generate color palette, base on `@color-kit/palette`.
+- 
 
 ## Credits
 
-- [colord](https://github.com/omgovich/colord)
 - [culori](https://github.com/Evercoder/culori)
 - [react-colorful](https://omgovich.github.io/react-colorful)
 

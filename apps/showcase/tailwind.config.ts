@@ -12,16 +12,10 @@ export default {
   ],
   darkMode: 'class',
   plugins: [
-    nextui(),
+    // nextui(),
     palette({
       primary: '#F6B894',
     }),
   ],
   theme: {},
 } satisfies Config
-
-console.log(
-  palette({
-    primary: '#F6B894',
-  }),
-)
