@@ -1,12 +1,28 @@
-import type { Swatch } from './types'
+import { Hct, TemperatureCache, argbFromHex, hexFromArgb } from '@material/material-color-utilities'
+
+import type { ParsedOptions, Swatch, SwatchLike } from './types'
 
 import { toColor } from './utils'
 
-export function createSwatch(name: string, color: any): Swatch | null {
-  const hex = toColor(color)!
+export function createSwatches(swatchLike: SwatchLike, options: ParsedOptions): Swatch[] {
+  const swatchesArray = Array.isArray(swatchLike) ? swatchLike : Object.entries(swatchLike)
 
-  return {
-    color: hex,
-    name,
+  if (options.primary) {
+    const temperatureCache = new TemperatureCache(Hct.fromInt(argbFromHex(options.primary)))
+
+    swatchesArray.unshift(['primary', options.primary])
+    const secondary = hexFromArgb(temperatureCache.complement.toInt())
+    swatchesArray.unshift(['secondary', secondary])
   }
+
+  return swatchesArray
+    .map(([name, value]) => {
+      const color = toColor(value)
+      if (!color) return null
+      return {
+        color,
+        name,
+      }
+    })
+    .filter(Boolean)
 }

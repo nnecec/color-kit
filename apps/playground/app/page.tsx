@@ -2,9 +2,8 @@
 
 import type { DefaultColors } from 'tailwindcss/types/generated/colors'
 
+import { createPalette } from 'tailwind-plugin-palette'
 import colors from 'tailwindcss/colors'
-
-import { createPalette } from '@color-kit/palette'
 
 const DEFAULT_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 
@@ -47,27 +46,26 @@ export default function PalettePage() {
 
   const steps = toSteps(interval)
 
-  const palette = createPalette(map, {
-    primary: '#845EC2',
-    steps: steps.map(value => value / 10).toReversed(),
-    dark: true,
+  const palette = createPalette({
+    // dark: true,
+    primary: '#f6b894',
   })
 
   return (
     <div className="h-screen w-screen">
       <h1 className="text-xl">tailwind-plugin-palette</h1>
-      {palette.map(swatch => (
-        <div key={swatch.name}>
+      {Object.entries(palette).map(([name, shades]) => (
+        <div key={name}>
           <div className="flex gap-1">
-            {swatch.shades.map((shade, i) => (
-              <div key={shade.color}>
+            {Object.entries(shades).map(([step, shade]) => (
+              <div key={shade}>
                 <div
                   className="size-20"
                   style={{
-                    backgroundColor: shade.color,
+                    backgroundColor: shade,
                   }}
                 >
-                  {swatch.name}-{steps[i]!}
+                  {name}-{step}
                 </div>
               </div>
             ))}

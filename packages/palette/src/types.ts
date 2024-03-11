@@ -21,23 +21,23 @@ type ColorOptions = {
 }
 
 export type Options = {
+  /** Also generate dark mode palette */
+  dark?: boolean
   /** Provide a primary color */
   primary?: unknown
   /** Minimum 0 to maximum 100 */
   steps: number | number[]
-  /** Also generate dark mode palette */
-  dark?: boolean
 } & Partial<ColorOptions>
 
 export type ParsedOptions = {
+  dark: boolean
   primary?: string
   steps: number[]
-  dark: boolean
 }
 
 export type Palette = {
-  name: string
   default?: string
+  name: string
   shades: Shade[]
 }
 

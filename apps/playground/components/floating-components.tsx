@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Button,
   Card,
@@ -38,7 +40,7 @@ export const FloatingComponents = () => {
             src="https://nextui.org/_next/image?url=%2Fimages%2Fcard-example-6.webp&w=256&q=75"
             width={120}
           />
-          <CardFooter className="bottom-1 z-10 ml-1 w-[calc(100%_-_8px)] justify-between overflow-hidden rounded-xl border-1 border-white/20 py-2 shadow-lg before:rounded-xl before:bg-black/10">
+          <CardFooter className="border-1 bottom-1 z-10 ml-1 w-[calc(100%_-_8px)] justify-between overflow-hidden rounded-xl border-white/20 py-2 shadow-lg before:rounded-xl before:bg-black/10">
             <p className="text-xs font-semibold text-white/80">Camera</p>
             <p className="text-xs font-semibold text-white/80">$525</p>
           </CardFooter>
@@ -62,7 +64,10 @@ export const FloatingComponents = () => {
         </Tabs>
 
         <Card className="max-w-fit border-none" shadow="lg">
-          <CardBody>tailwind-plugin-palette</CardBody>
+          <CardBody>
+            <h1 className="text-primary">tailwind-plugin-palette</h1>
+            <h1 className="text-secondary">Build a color palette</h1>
+          </CardBody>
         </Card>
 
         <div>
@@ -106,9 +111,9 @@ export const FloatingComponents = () => {
             src="/images/hero-card.webp"
             width={200}
           />
-          <CardFooter className="bottom-1 z-10 ml-1 w-[calc(100%_-_8px)] justify-between overflow-hidden rounded-large border-1 border-white/20 py-1 shadow-small before:rounded-xl before:bg-white/10">
+          <CardFooter className="rounded-large border-1 shadow-small bottom-1 z-10 ml-1 w-[calc(100%_-_8px)] justify-between overflow-hidden border-white/20 py-1 before:rounded-xl before:bg-white/10">
             <p className="text-tiny text-white/80">Available soon.</p>
-            <Button className="bg-black/20 text-tiny text-white" color="default" radius="lg" size="sm" variant="flat">
+            <Button className="text-tiny bg-black/20 text-white" color="default" radius="lg" size="sm" variant="flat">
               Notify me
             </Button>
           </CardFooter>
