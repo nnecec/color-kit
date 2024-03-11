@@ -1,62 +1,58 @@
 'use client'
 
-import type { DefaultColors } from 'tailwindcss/types/generated/colors'
+import { useEffect, useMemo } from 'react'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 
-import { createPalette } from 'tailwind-plugin-palette'
-import colors from 'tailwindcss/colors'
+import { createPalette, getTailwindColors } from 'tailwind-plugin-palette'
 
-const DEFAULT_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+import { Input, Switch } from '@nextui-org/react'
 
-function toSteps(interval?: number | number[]) {
-  let steps: number | number[] = DEFAULT_STEPS
-  if (Array.isArray(interval)) {
-    steps = interval
-  } else if (typeof interval === 'number') {
-    let start = 0
-    steps = []
-    while (start < 1000) {
-      steps.push(start + interval)
-      start += interval
-    }
-    steps = steps
-  } else {
-    steps = DEFAULT_STEPS
-  }
-  return steps
-}
-
-type DefaultColorsKeys = keyof DefaultColors
-
-const map = Object.fromEntries(
-  Object.keys(colors)
-    .map(color => {
-      if (['blueGray', 'coolGray', 'lightBlue', 'trueGray', 'warmGray'].includes(color)) return null
-
-      const middleColor = colors[color as DefaultColorsKeys][500]
-      if (middleColor) {
-        return [color, middleColor] as [string, string]
-      }
-      return null
-    })
-    .filter(Boolean),
-)
-
-export default function PalettePage() {
-  const { interval, primary } = {} as any
-
-  const steps = toSteps(interval)
-
-  const palette = createPalette({
-    // dark: true,
-    primary: '#f6b894',
+export default function RootPage() {
+  const { control } = useForm({
+    defaultValues: {
+      dark: false,
+      primary: '#f6b894',
+    },
   })
+
+  const values = useWatch({ control })
+
+  const palette = useMemo(
+    () =>
+      createPalette({
+        colors: getTailwindColors(500),
+        dark: values.dark,
+        primary: values.primary,
+      }),
+    [values],
+  )
 
   return (
     <div className="h-screen w-screen">
-      <h1 className="text-xl">tailwind-plugin-palette</h1>
+      <h1 className="text-6xl">tailwind-plugin-palette</h1>
+      <div className="fixed bottom-10 z-10 rounded-full">
+        <Controller
+          control={control}
+          name="primary"
+          render={({ field }) => (
+            <input
+              className="w-[100px]"
+              onChange={e => field.onChange(e.target.value)}
+              type="color"
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="dark"
+          render={({ field }) => <Switch isSelected={field.value} onValueChange={value => field.onChange(value)} />}
+        />
+      </div>
+
       {Object.entries(palette).map(([name, shades]) => (
         <div key={name}>
-          <div className="flex gap-1">
+          <div className="flex">
             {Object.entries(shades).map(([step, shade]) => (
               <div key={shade}>
                 <div
@@ -64,9 +60,7 @@ export default function PalettePage() {
                   style={{
                     backgroundColor: shade,
                   }}
-                >
-                  {name}-{step}
-                </div>
+                />
               </div>
             ))}
           </div>

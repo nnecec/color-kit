@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss'
 
-import palette, { createPalette } from 'tailwind-plugin-palette'
+import { createPalette, getTailwindColors } from 'tailwind-plugin-palette'
 
 import { nextui } from '@nextui-org/react'
 
@@ -15,14 +15,21 @@ const config: Config = {
   darkMode: 'class',
   plugins: [
     nextui({
-      themes: {
-        dark: {
-          colors: createPalette({
-            dark: true,
-            primary: '#F6B894',
-          }),
-        },
-      },
+      // themes: {
+      //   dark: {
+      //     colors: createPalette({
+      //       colors: getTailwindColors(),
+      //       dark: true,
+      //       primary: '#F6B894',
+      //     }),
+      //   },
+      //   light: {
+      //     colors: createPalette({
+      //       colors: getTailwindColors(),
+      //       primary: '#F6B894',
+      //     }),
+      //   },
+      // },
     }),
   ],
 }

@@ -65,7 +65,7 @@ export const FloatingComponents = () => {
 
         <Card className="max-w-fit border-none" shadow="lg">
           <CardBody>
-            <h1 className="text-primary">tailwind-plugin-palette</h1>
+            <h1 className="text-primary-100">tailwind-plugin-palette</h1>
             <h1 className="text-secondary">Build a color palette</h1>
           </CardBody>
         </Card>

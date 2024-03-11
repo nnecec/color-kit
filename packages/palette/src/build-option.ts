@@ -4,10 +4,10 @@ import { toColor } from './utils'
 
 export const createOptions = (options?: Partial<Options>): ParsedOptions => {
   const base = {
+    dark: options?.dark ?? false,
     easing: 'easeInQuad',
     shift: 0,
     steps: options?.steps ?? 10,
-    dark: options?.dark ?? false,
   }
 
   const steps =
