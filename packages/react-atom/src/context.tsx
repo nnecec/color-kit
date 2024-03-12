@@ -8,10 +8,6 @@ import type { ColorAtomProps } from './types'
 
 export const ColorAtomContext = createContext<ColorAtomProps | null>(null)
 
-type ColorAtomProviderProps = {
-  value?: ColorAtomProps
-}
-
 export const useColorAtom = (value?: ColorAtomProps): ColorAtomProps => {
   const ref = useRef(value)
 
@@ -26,9 +22,9 @@ export const useColorAtom = (value?: ColorAtomProps): ColorAtomProps => {
   return ref.current
 }
 
-export const ColorAtomProvider = ({ children, value }: PropsWithChildren<ColorAtomProviderProps>) => {
-  const colorAtom = useColorAtom(value)
-  return <ColorAtomContext.Provider value={colorAtom}>{children}</ColorAtomContext.Provider>
+export const ColorAtomProvider = ({ children, colorAtom, thumb }: PropsWithChildren<ColorAtomProps>) => {
+  const atom = useColorAtom({ colorAtom, thumb })
+  return <ColorAtomContext.Provider value={atom}>{children}</ColorAtomContext.Provider>
 }
 
 export const useColorAtomContext = () => {

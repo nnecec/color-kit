@@ -14,7 +14,7 @@ import { ColorValue } from '../../components/color-value'
 export default function HomePage() {
   return (
     <div className="h-screen w-screen">
-      <ColorAtomProvider value={{ thumb: { size: 16 } }}>
+      <ColorAtomProvider thumb={{ size: 16 }}>
         <div className="absolute bottom-1/2 w-screen pb-20 text-center text-7xl font-bold">
           <ColorValue />
         </div>

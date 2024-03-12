@@ -5,7 +5,7 @@ import type { Options } from './types'
 import { toSteps } from './utils'
 
 export const createPalette = (options: Options) => {
-  const { colors, dark, interval, primary } = options ?? {}
+  const { colors, dark, interval, primary, reversed } = options ?? {}
 
   if (!colors) {
     throw new Error('You must provide colors map.')
@@ -15,7 +15,7 @@ export const createPalette = (options: Options) => {
   const palette = ColorKitCreatePalette(colors, {
     dark,
     primary,
-    steps: steps.toReversed().map(value => value / 10),
+    steps: Boolean(reversed) ? steps.map(value => value / 10) : steps.toReversed().map(value => value / 10),
   })
 
   return Object.fromEntries<Record<string, string>>(

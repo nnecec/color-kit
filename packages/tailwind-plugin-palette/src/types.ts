@@ -8,6 +8,7 @@ export type Options = {
   interval?: number | number[]
   /** provide a primary color, it will generate primary shades */
   primary?: Record<string, number | string> | string
+  reversed?: boolean
 }
 
 export type DefaultColorsKeys = keyof DefaultColors
