@@ -18,9 +18,9 @@ export function createShades(
   const palette = TonalPalette.fromHueAndChroma(hct.hue, hct.chroma)
 
   return {
-    default: dark ? hexFromArgb(Hct.from(hct.hue, hct.chroma, hct.tone * 0.92).toInt()) : hexFromArgb(hct.toInt()),
+    default: dark ? hexFromArgb(Hct.from(hct.hue, hct.chroma, hct.tone * 0.95).toInt()) : hexFromArgb(hct.toInt()),
     shades: steps.map(step => ({
-      color: hexFromArgb(palette.tone(dark ? step * 0.92 : step)),
+      color: hexFromArgb(palette.tone(dark ? step * 0.95 : step)),
       step,
     })),
   }

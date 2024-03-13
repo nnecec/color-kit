@@ -3,52 +3,59 @@
 import { useDeferredValue, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 
-import { ArrowUturnLeftIcon, CheckIcon, MoonIcon, PlusIcon, SunIcon } from '@heroicons/react/20/solid'
-import { colorsNamed, differenceEuclidean, nearest } from 'culori'
+import { ArrowLeftIcon, ArrowRightIcon, MoonIcon, PlusIcon, SunIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import clsx from 'clsx'
+import { colorsNamed, differenceEuclidean, formatHex, nearest, random } from 'culori'
 import { useClipboard } from 'foxact/use-clipboard'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { createPalette, getTailwindColors } from 'tailwind-plugin-palette'
+import { createPalette } from 'tailwind-plugin-palette'
 
-import { Button, Input, Switch, Tooltip } from '@nextui-org/react'
+import { Button, Checkbox, Input, Switch, Tooltip } from '@nextui-org/react'
 
 import { ColorPicker } from '../components/color-picker'
 
 let names = Object.keys(colorsNamed)
-let nearestNamedColors = (hex: string) => nearest<string>(names, differenceEuclidean())(hex, 1)[0]
+
+const randomColor = () => {
+  const hex = formatHex(random())
+  const name = nearest<string>(names, differenceEuclidean())(hex, 1)[0]
+  return { hex, name }
+}
+const MotionButton = motion(Button)
 
 export default function RootPage() {
   const [inPaletteView, setInPaletteView] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [primaryHovered, setPrimaryHovered] = useState(false)
   const [colors, setColors] = useState(new Map())
 
-  const { control } = useForm({
-    defaultValues: {
-      dark: false,
-      primary: '#f6b894',
-    },
-  })
+  const { control, setValue } = useForm<{ dark?: boolean; primary?: string; reversed?: boolean }>()
 
   const values = useWatch({ control })
-  const deferredValues = useDeferredValue(values)
+  const deferredValues = useDeferredValue({ colors, ...values })
   const palette = useMemo(
     () =>
       createPalette({
         colors: Object.fromEntries(colors),
         dark: deferredValues.dark,
         primary: deferredValues.primary,
+        reversed: deferredValues.reversed,
       }),
     [colors, deferredValues],
   )
 
-  const { control: editControl, getValues } = useForm<{ swatchValue: string }>()
+  console.log(palette)
+
+  const isEmptyPalette = !Object.keys(palette)?.length
 
   const handleEditSubmit = () => {
-    const values = getValues()
+    let color = randomColor()
 
-    const name = nearestNamedColors(values.swatchValue)
+    while (colors.has(color.name)) {
+      color = randomColor()
+    }
 
     setColors(colors => {
-      colors.set(name, values.swatchValue)
+      colors.set(color.name, color.hex)
       return new Map(colors)
     })
   }
@@ -59,11 +66,15 @@ export default function RootPage() {
 
   useMotionValueEvent(scrollY, 'change', latest => {
     if (latest > window.innerHeight / 2) {
-      setInPaletteView(true)
+      !inPaletteView && setInPaletteView(true)
     } else {
-      setInPaletteView(false)
+      inPaletteView && setInPaletteView(false)
     }
   })
+
+  const removePrimaryColor = () => {
+    setValue('primary', undefined)
+  }
 
   return (
     <div className="h-screen w-screen">
@@ -82,7 +93,7 @@ export default function RootPage() {
                   >
                     npm
                   </Button>
-                  or
+                  /
                   <Button
                     className="mx-2"
                     onClick={() => copy('pnpm install --save-dev tailwind-plugin-palette')}
@@ -102,72 +113,145 @@ export default function RootPage() {
         </div>
       </div>
       <motion.div
-        animate={{ opacity: inPaletteView ? 1 : 0, y: inPaletteView ? 0 : 100 }}
-        className="fixed bottom-10 left-1/2"
-        initial={{ opacity: 0, y: 100 }}
-        style={{
-          x: '-50%',
+        animate={inPaletteView ? 'show' : 'hide'}
+        className="fixed bottom-10 left-[calc(50%-170px)] z-10"
+        initial="hide"
+        variants={{
+          hide: { opacity: 0.3, y: 32 + 40 },
+          show: { opacity: 1, y: 0 },
         }}
-        transition={{ duration: 0.4, ease: 'easeInOut' }}
       >
-        <div className="flex h-16 items-center space-x-3 rounded-full bg-white/30 p-3 shadow backdrop-blur-lg">
-          <Controller
-            control={control}
-            name="primary"
-            render={({ field }) => <ColorPicker onChange={value => field.onChange(value)} value={field.value} />}
-          />
-          <Controller
-            control={control}
-            name="dark"
-            render={({ field }) => (
-              <Switch
-                classNames={{
-                  wrapper: 'mr-0',
-                }}
-                endContent={<SunIcon width={14} />}
-                isSelected={field.value}
-                onValueChange={value => field.onChange(value)}
-                size="lg"
-                startContent={<MoonIcon width={14} />}
-              />
-            )}
-          />
-
-          <div className="flex gap-2">
+        <motion.div
+          className="flex h-16 items-center gap-3 rounded-full bg-white/30 p-4 shadow backdrop-blur-lg"
+          layout="size"
+        >
+          <motion.div
+            className="group flex gap-1"
+            onPointerEnter={() => setPrimaryHovered(true)}
+            onPointerLeave={() => setPrimaryHovered(false)}
+          >
             <Controller
-              control={editControl}
-              name="swatchValue"
-              render={({ field }) => <ColorPicker onChange={value => field.onChange(value)} value={field.value} />}
+              control={control}
+              name="primary"
+              render={({ field }) => (
+                <ColorPicker className="z-10" onChange={value => field.onChange(value)} value={field.value} />
+              )}
             />
 
+            <MotionButton
+              animate={primaryHovered ? 'show' : 'hide'}
+              className={clsx(primaryHovered ? 'inline-flex' : 'hidden')}
+              isIconOnly
+              onPress={() => {
+                setPrimaryHovered(false)
+                removePrimaryColor()
+              }}
+              radius="full"
+              size="sm"
+              transition={{ ease: 'linear' }}
+              variants={{
+                hide: {
+                  opacity: 0,
+                  x: -30,
+                },
+                show: {
+                  opacity: 1,
+                  x: 0,
+                },
+              }}
+            >
+              <XMarkIcon width={14} />
+            </MotionButton>
+          </motion.div>
+
+          <motion.div className="flex gap-3" layout="position">
             <Tooltip content="Add a swatch">
               <Button isIconOnly onPress={handleEditSubmit} radius="full" size="sm">
                 <PlusIcon width={14} />
               </Button>
             </Tooltip>
-          </div>
-        </div>
+
+            <Controller
+              control={control}
+              name="dark"
+              render={({ field }) => (
+                <Checkbox isSelected={field.value} onValueChange={value => field.onChange(value)} size="lg">
+                  Dark
+                </Checkbox>
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="reversed"
+              render={({ field }) => (
+                <Checkbox isSelected={field.value} onValueChange={value => field.onChange(value)} size="lg">
+                  Reversed
+                </Checkbox>
+              )}
+            />
+          </motion.div>
+        </motion.div>
       </motion.div>
 
-      <div className="container mx-auto min-h-screen">
-        {Object.entries(palette).map(([name, shades]) => (
-          <div key={name}>
-            <h2>{name}</h2>
-            <div className="flex">
-              {Object.entries(shades).map(([step, shade], index) => (
-                <div className="relative w-full" key={index}>
-                  <div className="mt-[100%]" />
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundColor: shade,
+      <div
+        className={clsx(
+          'container relative mx-auto min-h-screen space-y-6 pb-60 pt-40',
+          isEmptyPalette && 'flex items-center justify-center',
+        )}
+      >
+        {isEmptyPalette ?
+          <div>empty</div>
+        : Object.entries(palette).map(([name, shades]) => (
+            <div key={name}>
+              <div className="flex items-center gap-4">
+                <ColorPicker value={colors.get(name)} />
+                <Input classNames={{ base: 'w-auto' }} fullWidth={false} value={name} />
+              </div>
+              <motion.div
+                animate="show"
+                className="flex"
+                initial="hide"
+                transition={{
+                  staggerChildren: 0.01,
+                }}
+                variants={{
+                  hide: {
+                    opacity: 0,
+                  },
+                  show: {
+                    opacity: 1,
+                  },
+                }}
+              >
+                {Object.entries(shades).map(([step, shade], index) => (
+                  <motion.div
+                    className="relative w-full"
+                    key={index}
+                    variants={{
+                      hide: {
+                        opacity: 0,
+                      },
+                      show: {
+                        opacity: 1,
+                      },
                     }}
-                  />
-                </div>
-              ))}
+                  >
+                    <div className="mt-[100%]" />
+                    <Tooltip content={`${name}-${step}`}>
+                      <div
+                        className="absolute inset-[12%] rounded-full text-sm"
+                        style={{
+                          backgroundColor: shade,
+                        }}
+                      />
+                    </Tooltip>
+                  </motion.div>
+                ))}
+              </motion.div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   )
