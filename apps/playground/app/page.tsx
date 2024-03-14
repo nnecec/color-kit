@@ -7,8 +7,9 @@ import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { colorsNamed, differenceEuclidean, formatHex, nearest, random } from 'culori'
 import { useClipboard } from 'foxact/use-clipboard'
-import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { atom, useAtom } from 'jotai'
+import { nanoid } from 'nanoid'
 import { createPalette } from 'tailwind-plugin-palette'
 
 import { Button, Checkbox, Input, Tooltip } from '@nextui-org/react'
@@ -20,7 +21,7 @@ let names = Object.keys(colorsNamed)
 const randomColor = () => {
   const hex = formatHex(random())
   const name = nearest<string>(names, differenceEuclidean())(hex, 1)[0]!
-  return { hex, name }
+  return { hex, id: nanoid(), name }
 }
 const MotionButton = motion(Button)
 
@@ -36,8 +37,10 @@ const optionsAtom = atom<Options>({
   reversed: false,
 })
 
-const colorsAtom = atom<{ hex: string; name: string }[]>([])
-const editingSwatchesAtom = atom(new Map())
+type EditingSwatch = { hex: string; id: string; name: string }
+
+const colorsAtom = atom<EditingSwatch[]>([])
+const editingSwatchesAtom = atom<Map<number, EditingSwatch & { errorMessage?: string }>>(new Map())
 
 export default function RootPage() {
   const [inPaletteView, setInPaletteView] = useState(false)
@@ -48,7 +51,7 @@ export default function RootPage() {
   const [editingSwatches, setEditingSwatches] = useAtom(editingSwatchesAtom)
 
   const deferredValues = useDeferredValue({
-    colors: colors,
+    colors,
     ...options,
   })
   const palette = useMemo(
@@ -87,48 +90,46 @@ export default function RootPage() {
 
   const titleY = useTransform(scrollY, [0, window.innerHeight], [0, window.innerHeight / 2.5])
 
-  console.log(palette)
-
   return (
     <div className="relative h-screen w-screen">
       <div className="flex h-screen items-center justify-center">
-        <motion.div
-          className="text-center"
-          style={{
-            y: titleY,
-          }}
+        <Tooltip
+          className="h-[80px] w-[500px]"
+          content={
+            copied ? 'Copied!' : (
+              <div>
+                Install with
+                <Button
+                  className="mx-2"
+                  onClick={() => copy('npm install --save-dev tailwind-plugin-palette')}
+                  size="sm"
+                >
+                  npm
+                </Button>
+                /
+                <Button
+                  className="mx-2"
+                  onClick={() => copy('pnpm install --save-dev tailwind-plugin-palette')}
+                  size="sm"
+                >
+                  pnpm
+                </Button>
+              </div>
+            )
+          }
+          offset={20}
+          placement="bottom"
+          showArrow={true}
         >
-          <Tooltip
-            className="h-[80px] w-[500px]"
-            content={
-              copied ? 'Copied!' : (
-                <div>
-                  Install with
-                  <Button
-                    className="mx-2"
-                    onClick={() => copy('npm install --save-dev tailwind-plugin-palette')}
-                    size="sm"
-                  >
-                    npm
-                  </Button>
-                  /
-                  <Button
-                    className="mx-2"
-                    onClick={() => copy('pnpm install --save-dev tailwind-plugin-palette')}
-                    size="sm"
-                  >
-                    pnpm
-                  </Button>
-                </div>
-              )
-            }
-            offset={20}
-            placement="bottom"
-            showArrow={true}
+          <motion.div
+            className="text-center"
+            style={{
+              y: titleY,
+            }}
           >
             <h1 className="mb-4 text-6xl">tailwind-plugin-palette</h1>
-          </Tooltip>
-        </motion.div>
+          </motion.div>
+        </Tooltip>
       </div>
       <motion.div
         animate={inPaletteView ? 'show' : 'hide'}
@@ -153,57 +154,48 @@ export default function RootPage() {
               onChange={value => setOptions({ ...options, primary: value })}
               value={options.primary}
             />
-
-            <MotionButton
-              animate={primaryHovered ? 'show' : 'hide'}
-              className={clsx(primaryHovered ? 'inline-flex' : 'hidden')}
-              isIconOnly
-              onPress={() => {
-                setPrimaryHovered(false)
-                setOptions({ ...options, primary: undefined })
-              }}
-              radius="full"
-              size="sm"
-              transition={{ ease: 'linear' }}
-              variants={{
-                hide: {
-                  opacity: 0,
-                  x: -30,
-                },
-                show: {
+            {primaryHovered ?
+              <MotionButton
+                animate={{
                   opacity: 1,
                   x: 0,
-                },
-              }}
-            >
-              <XMarkIcon width={14} />
-            </MotionButton>
+                }}
+                initial={{
+                  opacity: 0,
+                  x: -30,
+                }}
+                isIconOnly
+                onPress={() => {
+                  setPrimaryHovered(false)
+                  setOptions({ ...options, primary: undefined })
+                }}
+                radius="full"
+                transition={{ ease: 'linear' }}
+              >
+                <XMarkIcon width={14} />
+              </MotionButton>
+            : null}
           </motion.div>
 
           <motion.div className="flex gap-3" layout="position">
             <Tooltip content="Add a swatch">
-              <Button isIconOnly onPress={addSwatch} radius="full" size="sm">
+              <Button isIconOnly onPress={addSwatch} radius="full">
                 <PlusIcon width={14} />
               </Button>
             </Tooltip>
 
-            <Checkbox
-              isSelected={options.dark}
-              onValueChange={value => setOptions({ ...options, dark: value })}
-              size="lg"
-            >
+            <Checkbox isSelected={options.dark} onValueChange={value => setOptions({ ...options, dark: value })}>
               Dark
             </Checkbox>
 
             <Checkbox
               isSelected={options.reversed}
               onValueChange={value => setOptions({ ...options, reversed: value })}
-              size="lg"
             >
               Reversed
             </Checkbox>
 
-            <Button disabled={isEmptyPalette} isIconOnly size="sm">
+            <Button disabled={isEmptyPalette} isIconOnly radius="full">
               <ArrowUpOnSquareIcon width={14} />
             </Button>
           </motion.div>
@@ -220,49 +212,73 @@ export default function RootPage() {
           <div>empty</div>
         : colors.map((swatch, index) => {
             const editingSwatch = editingSwatches.get(index)
+            const isInvalid = Boolean(editingSwatch?.errorMessage)
 
             return (
-              <div key={swatch.hex}>
-                <div className="flex items-center gap-4">
+              <div key={swatch.id}>
+                <div className="mb-4 flex items-center gap-4">
                   <ColorPicker
                     className="z-10"
-                    defaultValue={swatch.hex}
                     onChange={value => {
-                      const newSwatch = { hex: value, name: swatch.name }
+                      const newSwatch = { ...swatch, hex: value }
                       editingSwatches.set(index, newSwatch)
                       setEditingSwatches(new Map(editingSwatches))
                     }}
+                    value={editingSwatch?.hex ?? swatch.hex}
                   />
 
                   <Input
                     classNames={{ base: 'w-auto' }}
-                    defaultValue={swatch.name}
+                    errorMessage={editingSwatch?.errorMessage}
                     fullWidth={false}
+                    isInvalid={isInvalid}
                     onValueChange={value => {
-                      const newSwatch = { hex: swatch.hex, name: value }
+                      const newSwatch = { ...swatch, name: value }
                       editingSwatches.set(index, newSwatch)
                       setEditingSwatches(new Map(editingSwatches))
                     }}
+                    value={editingSwatch?.name ?? swatch.name}
                   />
 
                   {editingSwatch && (editingSwatch.name !== swatch.name || editingSwatch.hex !== swatch.hex) ?
-                    <Button
-                      isIconOnly
-                      onPress={() => {
-                        const newSwatch = editingSwatches.get(index)
-                        editingSwatches.delete(index)
-                        setColors(colors.toSpliced(index, 1, newSwatch))
-                        setEditingSwatches(new Map(editingSwatches))
-                      }}
-                    >
-                      <CheckIcon width={14} />
-                    </Button>
+                    <>
+                      <Button
+                        isIconOnly
+                        onPress={() => {
+                          const newSwatch = editingSwatches.get(index)!
+                          const exist = colors.findIndex(({ name }) => name === newSwatch?.name)
+                          if (exist > -1 && index !== exist) {
+                            newSwatch.errorMessage = 'There already a swatch with that name'
+
+                            editingSwatches.set(index, newSwatch)
+                            setEditingSwatches(new Map(editingSwatches))
+                            return
+                          }
+                          editingSwatches.delete(index)
+                          setEditingSwatches(new Map(editingSwatches))
+                          setColors(colors.toSpliced(index, 1, { ...newSwatch, id: nanoid() }))
+                        }}
+                      >
+                        <CheckIcon width={14} />
+                      </Button>
+                      <Button
+                        isIconOnly
+                        onPress={() => {
+                          const originSwatch = colors[index]!
+                          editingSwatches.set(index, originSwatch)
+                          setEditingSwatches(new Map(editingSwatches))
+                        }}
+                      >
+                        <XMarkIcon width={14} />
+                      </Button>
+                    </>
                   : null}
                 </div>
                 <motion.div
                   animate="show"
                   className="flex"
                   initial="hide"
+                  key={swatch.id}
                   transition={{
                     staggerChildren: 0.01,
                   }}

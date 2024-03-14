@@ -16,22 +16,21 @@
     "clsx": "^2.1.0",
     "culori": "^4.0.1",
     "foxact": "^0.2.33",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.0.12",
     "jotai": "^2.7.0",
+    "nanoid": "^5.0.6",
     "next": "14.1.3",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.51.0"
+    "tailwind-plugin-palette": "workspace:*"
   },
   "devDependencies": {
-    "@swc-jotai/react-refresh": "^0.1.0",
     "@types/culori": "^2.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.18",
     "postcss": "^8",
-    "tailwind-plugin-palette": "workspace:*",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

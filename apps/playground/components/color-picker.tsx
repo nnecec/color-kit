@@ -21,7 +21,6 @@ export const ColorPicker = ({
       isIconOnly
       onClick={() => ref.current?.click()}
       radius="full"
-      size="sm"
       style={{
         backgroundColor: val ?? '#fff',
         backgroundImage:
