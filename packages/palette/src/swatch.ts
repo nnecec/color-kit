@@ -10,9 +10,9 @@ export function createSwatches(swatchLike: SwatchLike, options: ParsedOptions): 
   if (options.primary) {
     const temperatureCache = new TemperatureCache(Hct.fromInt(argbFromHex(options.primary)))
 
-    swatchesArray.unshift(['primary', options.primary])
     const secondary = hexFromArgb(temperatureCache.complement.toInt())
     swatchesArray.unshift(['secondary', secondary])
+    swatchesArray.unshift(['primary', options.primary])
   }
 
   return swatchesArray
