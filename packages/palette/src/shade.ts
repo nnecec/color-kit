@@ -9,9 +9,9 @@ export function createShades(
   default: string
   shades: Shade[]
 } {
-  const { dark, primary, steps } = options
+  const { dark, harmonize, primary, steps } = options
 
-  const argb = primary ? Blend.harmonize(argbFromHex(hex), argbFromHex(primary)) : argbFromHex(hex)
+  const argb = harmonize && primary ? Blend.harmonize(argbFromHex(hex), argbFromHex(primary)) : argbFromHex(hex)
 
   const hct = Hct.fromInt(argb)
 

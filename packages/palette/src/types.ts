@@ -23,6 +23,8 @@ type ColorOptions = {
 export type Options = {
   /** Also generate dark mode palette */
   dark?: boolean
+  /** mark palette harmonize with primary color, require primary option  */
+  harmonize?: boolean
   /** Provide a primary color */
   primary?: unknown
   /** Minimum 0 to maximum 100 */
@@ -31,6 +33,7 @@ export type Options = {
 
 export type ParsedOptions = {
   dark: boolean
+  harmonize: boolean
   primary?: string
   steps: number[]
 }
