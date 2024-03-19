@@ -2,6 +2,8 @@ import type { ButtonProps } from '@nextui-org/react'
 
 import { useRef } from 'react'
 
+import { log } from 'node:console'
+
 import { Button } from '@nextui-org/react'
 
 import { usePropsValue } from '../utils/use-props-value'
@@ -19,7 +21,9 @@ export const ColorPicker = ({
   return (
     <Button
       isIconOnly
-      onClick={() => ref.current?.click()}
+      onClick={() => {
+        ref.current?.click()
+      }}
       radius="full"
       style={{
         backgroundColor: val ?? '#fff',
@@ -32,7 +36,7 @@ export const ColorPicker = ({
       {...props}
     >
       <input
-        className="invisible absolute left-0 size-0"
+        className="invisible absolute left-1/2 top-1/2 size-1"
         defaultValue={defaultValue}
         onChange={e => setVal(e.target.value)}
         ref={ref}

@@ -2,23 +2,22 @@
 
 import { useState, useTransition } from 'react'
 
-import { AdjustmentsHorizontalIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { AdjustmentsHorizontalIcon, BookOpenIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useAtom } from 'jotai'
 
 import {
   Badge,
-  Button,
   Checkbox,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Snippet,
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
@@ -131,54 +130,81 @@ export function PaletteTools() {
               </PopoverContent>
             </Popover>
 
-            <IconButton isDisabled={isEmptyPalette} onPress={onOpen}>
+            <IconButton
+              isDisabled={isEmptyPalette}
+              onPress={() => {
+                console.log(
+                  JSON.stringify(
+                    Object.fromEntries([
+                      ['colors', Object.fromEntries(colors.map(color => [color.name, color.hex]))],
+                      ...Object.entries(options).filter(([, value]) => Boolean(value)),
+                    ]),
+                    null,
+                    2,
+                  ),
+                )
+              }}
+            >
               <ArrowUpOnSquareIcon width={14} />
+            </IconButton>
+
+            <IconButton onPress={onOpen}>
+              <BookOpenIcon width={14} />
             </IconButton>
           </motion.div>
         </motion.div>
       </motion.div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+      <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior="inside" size="xl">
         <ModalContent>
-          {onClose => (
-            <>
-              <ModalHeader className="text-xl">Configuration</ModalHeader>
-              <ModalBody className="prose dark:prose-invert">
-                <h4>1. Install tailwind-plugin-palette</h4>
-                <pre>npm install tailwind-plugin-palette</pre>
-
-                <h4>
-                  2. Configure your <code>tailwind.config.ts</code>
-                </h4>
-                <pre>
-                  {`import palette from 'tailwind-plugin-palette'
-
-export default {
-  plugins: [
-    palette(
-      ${JSON.stringify(Object.fromEntries([['colors', Object.fromEntries(colors.map(color => [color.name, color.hex]))], ...Object.entries(options).filter(([, value]) => Boolean(value))]), null, 2)}
-    )
-  ]
-}`}
-                </pre>
-                <h5>2.1 If you just need tailwind colors</h5>
-                <pre>{`import palette, { getTailwindColors } from 'tailwind-plugin-palette'
+          <ModalHeader className="text-xl">How to configure your Tailwind.CSS?</ModalHeader>
+          <ModalBody className="prose dark:prose-invert max-h-[50vh] overflow-y-auto">
+            <h4>1. Install tailwind-plugin-palette</h4>
+            <div className="not-prose flex gap-2">
+              <Snippet codeString="npm install --save-dev tailwind-plugin-palette" hideSymbol>
+                npm
+              </Snippet>
+              <Snippet codeString="pnpm install --save-dev tailwind-plugin-palette">pnpm</Snippet>
+              <Snippet codeString="bun add --dev tailwind-plugin-palette" hideSymbol>
+                bun
+              </Snippet>
+            </div>
+            <h4>2. Configure your tailwind config file</h4>
+            <pre className="overflow-visible">{`import palette, { getTailwindColors } from 'tailwind-plugin-palette'
 
 export default {
   plugins: [
     palette({
-      colors: getTailwindColors() // or getTailwindColors(400)
+      colors: getTailwindColors(400),
+      primary: "#ADCE91",
+      dark: true,
+      reversed: true,
+      harmonize: true
     })
   ]
 }`}</pre>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+            <h4>3. Options</h4>
+            <ul>
+              <li>
+                <code>{'colors: Record<string, string>'}</code>: A colors object, where the key is the name of the color
+                and the value is the hexadecimal value of the color. eg, <code>{'colors: { red: "#ff0000" }'}</code>
+              </li>
+              <li>
+                <code>primary: string</code>: Provide a hex value as primary color, automatically generate a secondary
+                color
+              </li>
+              <li>
+                <code>dark: boolean</code>: Reduce the brightness to adapt to the dark mode
+              </li>
+              <li>
+                <code>reversed: boolean</code>: Reverse the color value
+              </li>
+              <li>
+                <code>harmonize: boolean</code>: Make the palette more harmonious with the primary color(primary
+                required)
+              </li>
+            </ul>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </div>

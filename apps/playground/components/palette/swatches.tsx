@@ -143,7 +143,7 @@ function Swatches({ name, swatches }: { name: string; swatches: Record<string, s
   return (
     <motion.div
       animate="show"
-      className="flex"
+      className="grid grid-cols-6 lg:grid-cols-12"
       initial="hide"
       ref={ref}
       transition={{

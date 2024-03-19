@@ -15,7 +15,6 @@
     "@nextui-org/react": "^2.2.10",
     "clsx": "^2.1.0",
     "culori": "^4.0.1",
-    "foxact": "^0.2.33",
     "framer-motion": "11.0.8",
     "jotai": "^2.7.1",
     "nanoid": "^5.0.6",
