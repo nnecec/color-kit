@@ -1,20 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 
 import { Button, Input, Tooltip } from '@nextui-org/react'
 
+import { getColorName } from '../../utils/color'
 import { ColorPicker } from '../color-picker'
-import { colorsAtom, editingSwatchesAtom, optionsAtom, paletteAtom } from './utils'
+import { colorsAtom, editingSwatchesAtom, paletteAtom } from './utils'
 
 export function PaletteSwatches() {
   const [inPaletteView, setInPaletteView] = useState(false)
-  const options = useAtomValue(optionsAtom)
   const [colors, setColors] = useAtom(colorsAtom)
   const [palette] = useAtom(paletteAtom)
 
@@ -81,7 +81,7 @@ export function PaletteSwatches() {
                   <ColorPicker
                     className="z-10"
                     onChange={value => {
-                      const newSwatch = { ...swatch, hex: value }
+                      const newSwatch = { ...swatch, hex: value, name: getColorName(value) }
                       editingSwatches.set(index, newSwatch)
                       setEditingSwatches(new Map(editingSwatches))
                     }}
@@ -134,11 +134,18 @@ export function PaletteSwatches() {
 }
 
 function Swatches({ name, swatches }: { name: string; swatches: Record<string, string> }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
   return (
     <motion.div
       animate="show"
       className="flex"
       initial="hide"
+      ref={ref}
       transition={{
         staggerChildren: 0.01,
       }}

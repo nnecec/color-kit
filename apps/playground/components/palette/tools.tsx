@@ -24,7 +24,8 @@ import {
 } from '@nextui-org/react'
 
 import { ColorPicker } from '../../components/color-picker'
-import { IconButton, colorsAtom, optionsAtom, randomColor } from './utils'
+import { randomColor } from '../../utils/color'
+import { IconButton, colorsAtom, optionsAtom } from './utils'
 
 export function PaletteTools() {
   const [inPaletteView, setInPaletteView] = useState(false)

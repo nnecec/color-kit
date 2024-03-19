@@ -2,7 +2,6 @@ import type { ButtonProps } from '@nextui-org/react'
 
 import { forwardRef } from 'react'
 
-import { colorsNamed, differenceEuclidean, formatHex, nearest, random } from 'culori'
 import { motion } from 'framer-motion'
 import { atom } from 'jotai'
 import { createPalette } from 'tailwind-plugin-palette'
@@ -13,14 +12,6 @@ export const IconButton = forwardRef(function IconButton(props: ButtonProps, ref
   return <Button isIconOnly radius="full" {...props} ref={ref} />
 })
 export const MotionIconButton = motion(IconButton)
-
-const names = Object.keys(colorsNamed)
-
-export const randomColor = () => {
-  const hex = formatHex(random())
-  const name = nearest<string>(names, differenceEuclidean())(hex, 1)[0]!
-  return { hex, name }
-}
 
 export type Options = {
   dark?: boolean
