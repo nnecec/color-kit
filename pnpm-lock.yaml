@@ -60,9 +60,6 @@ importers:
       culori:
         specifier: ^4.0.1
         version: 4.0.1
-      foxact:
-        specifier: ^0.2.33
-        version: 0.2.33(react@18.2.0)
       framer-motion:
         specifier: 11.0.8
         version: 11.0.8(react-dom@18.2.0)(react@18.2.0)
@@ -5779,19 +5776,6 @@ packages:
       signal-exit: 4.1.0
     dev: true
 
-  /foxact@0.2.33(react@18.2.0):
-    resolution: {integrity: sha512-FpCpRJkcGGrGbuI1McQoSoIAtjoGwSjY6IsJBjDJYugdGLFxgpZnZMoq+VKOfQ8gH9MXA06HKCE1+yKIeUjDkw==}
-    peerDependencies:
-      react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      client-only: 0.0.1
-      react: 18.2.0
-      server-only: 0.0.1
-    dev: false
-
   /fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
     dev: true
@@ -8008,10 +7992,6 @@ packages:
       no-case: 2.3.2
       upper-case-first: 1.1.2
     dev: true
-
-  /server-only@0.0.1:
-    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
 
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}

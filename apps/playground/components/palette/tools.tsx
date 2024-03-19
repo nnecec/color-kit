@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useMemo, useRef, useState, useTransition } from 'react'
 
-import { AdjustmentsHorizontalIcon, BookOpenIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
+import { BookOpenIcon, CogIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useAtom } from 'jotai'
 
@@ -55,11 +54,22 @@ export function PaletteTools() {
     }
   })
 
+  const copiedOptions = useMemo(() => {
+    return JSON.stringify(
+      Object.fromEntries([
+        ['colors', Object.fromEntries(colors.map(color => [color.name, color.hex]))],
+        ...Object.entries(options).filter(([, value]) => Boolean(value)),
+      ]),
+      null,
+      2,
+    )
+  }, [colors, options])
+
   return (
     <div>
       <motion.div
         animate={inPaletteView ? 'show' : 'hide'}
-        className="fixed bottom-10 left-[calc(50%-114px)] z-10 select-none"
+        className="fixed bottom-10 left-[calc(50%-140px)] z-10 select-none"
         initial="hide"
         variants={{
           hide: { opacity: 0.3, y: 64 + 40 },
@@ -104,11 +114,12 @@ export function PaletteTools() {
             <Popover placement="top-start">
               <PopoverTrigger>
                 <IconButton>
-                  <AdjustmentsHorizontalIcon width={14} />
+                  <CogIcon width={14} />
                 </IconButton>
               </PopoverTrigger>
               <PopoverContent>
                 <div className="flex flex-col gap-4 px-1 py-2">
+                  <h4 className="text-base">More options</h4>
                   <Checkbox isSelected={options.dark} onValueChange={value => setOptions({ ...options, dark: value })}>
                     Dark
                   </Checkbox>
@@ -130,27 +141,22 @@ export function PaletteTools() {
               </PopoverContent>
             </Popover>
 
-            <IconButton
-              isDisabled={isEmptyPalette}
-              onPress={() => {
-                console.log(
-                  JSON.stringify(
-                    Object.fromEntries([
-                      ['colors', Object.fromEntries(colors.map(color => [color.name, color.hex]))],
-                      ...Object.entries(options).filter(([, value]) => Boolean(value)),
-                    ]),
-                    null,
-                    2,
-                  ),
-                )
-              }}
-            >
-              <ArrowUpOnSquareIcon width={14} />
-            </IconButton>
-
-            <IconButton onPress={onOpen}>
-              <BookOpenIcon width={14} />
-            </IconButton>
+            <Tooltip content="Copy the options">
+              <Snippet
+                classNames={{
+                  base: 'p-0 rounded-full gap-0 bg-default',
+                  copyButton: 'rounded-full text-sm w-10 h-10',
+                }}
+                codeString={copiedOptions}
+                disableCopy={isEmptyPalette}
+                hideSymbol
+              />
+            </Tooltip>
+            <Tooltip content="Documentation">
+              <IconButton onPress={onOpen}>
+                <BookOpenIcon width={14} />
+              </IconButton>
+            </Tooltip>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -159,18 +165,19 @@ export function PaletteTools() {
         <ModalContent>
           <ModalHeader className="text-xl">How to configure your Tailwind.CSS?</ModalHeader>
           <ModalBody className="prose dark:prose-invert max-h-[50vh] overflow-y-auto">
-            <h4>1. Install tailwind-plugin-palette</h4>
-            <div className="not-prose flex gap-2">
-              <Snippet codeString="npm install --save-dev tailwind-plugin-palette" hideSymbol>
-                npm
-              </Snippet>
-              <Snippet codeString="pnpm install --save-dev tailwind-plugin-palette">pnpm</Snippet>
-              <Snippet codeString="bun add --dev tailwind-plugin-palette" hideSymbol>
-                bun
-              </Snippet>
-            </div>
-            <h4>2. Configure your tailwind config file</h4>
-            <pre className="overflow-visible">{`import palette, { getTailwindColors } from 'tailwind-plugin-palette'
+            <div>
+              <h4>1. Install tailwind-plugin-palette</h4>
+              <div className="not-prose flex gap-2">
+                <Snippet codeString="npm install --save-dev tailwind-plugin-palette" hideSymbol>
+                  npm
+                </Snippet>
+                <Snippet codeString="pnpm install --save-dev tailwind-plugin-palette">pnpm</Snippet>
+                <Snippet codeString="bun add --dev tailwind-plugin-palette" hideSymbol>
+                  bun
+                </Snippet>
+              </div>
+              <h4>2. Configure your tailwind config file</h4>
+              <pre>{`import palette, { getTailwindColors } from 'tailwind-plugin-palette'
 
 export default {
   plugins: [
@@ -183,27 +190,29 @@ export default {
     })
   ]
 }`}</pre>
-            <h4>3. Options</h4>
-            <ul>
-              <li>
-                <code>{'colors: Record<string, string>'}</code>: A colors object, where the key is the name of the color
-                and the value is the hexadecimal value of the color. eg, <code>{'colors: { red: "#ff0000" }'}</code>
-              </li>
-              <li>
-                <code>primary: string</code>: Provide a hex value as primary color, automatically generate a secondary
-                color
-              </li>
-              <li>
-                <code>dark: boolean</code>: Reduce the brightness to adapt to the dark mode
-              </li>
-              <li>
-                <code>reversed: boolean</code>: Reverse the color value
-              </li>
-              <li>
-                <code>harmonize: boolean</code>: Make the palette more harmonious with the primary color(primary
-                required)
-              </li>
-            </ul>
+              <h4>3. Options</h4>
+              <ul>
+                <li>
+                  <code>{'colors: Record<string, string>'}</code>: A colors object, where the key is the name of the
+                  color and the value is the hexadecimal value of the color. eg,{' '}
+                  <code>{'colors: { red: "#ff0000" }'}</code>
+                </li>
+                <li>
+                  <code>primary: string</code>: Provide a hex value as primary color, automatically generate a secondary
+                  color
+                </li>
+                <li>
+                  <code>dark: boolean</code>: Reduce the brightness to adapt to the dark mode
+                </li>
+                <li>
+                  <code>reversed: boolean</code>: Reverse the color value
+                </li>
+                <li>
+                  <code>harmonize: boolean</code>: Make the palette more harmonious with the primary color(primary
+                  required)
+                </li>
+              </ul>
+            </div>
           </ModalBody>
         </ModalContent>
       </Modal>

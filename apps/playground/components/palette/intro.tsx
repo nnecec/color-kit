@@ -43,7 +43,7 @@ export function PaletteIntro() {
         </h1>
 
         <div className="left-1/2 top-full transition-all group-hover:translate-y-0 group-hover:opacity-100 lg:absolute lg:-translate-x-1/2 lg:-translate-y-1/2 lg:p-4 lg:opacity-0">
-          <h5 className="my-3">Install with</h5>
+          <h5 className="mb-3 mt-4 font-bold">Installation</h5>
           <div className="space-x-2">
             <Snippet codeString="npm install --save-dev tailwind-plugin-palette" hideSymbol>
               npm

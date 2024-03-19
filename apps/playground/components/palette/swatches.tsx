@@ -40,7 +40,10 @@ export function PaletteSwatches() {
       )}
     >
       {isEmptyPalette ?
-        <div>empty</div>
+        <div className="prose dark:prose-invert">
+          <h4>There is no swatch yet,</h4>
+          <h4>Please click the plus button or choose a primary color</h4>
+        </div>
       : colors.map((swatch, index) => {
           const editingSwatch = editingSwatches.get(index)
           const isInvalid = Boolean(editingSwatch?.errorMessage)
