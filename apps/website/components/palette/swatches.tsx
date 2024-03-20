@@ -140,7 +140,7 @@ function Swatches({ name, swatches }: { name: string; swatches: Record<string, s
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' })
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [])
 
   return (

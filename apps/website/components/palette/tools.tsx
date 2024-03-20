@@ -30,6 +30,7 @@ export function PaletteTools() {
   const [options, setOptions] = useAtom(optionsAtom)
   const [colors, setColors] = useAtom(colorsAtom)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const toolsRef = useRef()
 
   const [, startTransition] = useTransition()
 
@@ -48,11 +49,7 @@ export function PaletteTools() {
 
   useMotionValueEvent(scrollY, 'change', latest => {
     if (latest > window.innerHeight / 2) {
-      if (latest + window.document.documentElement.clientHeight > window.document.documentElement.scrollHeight - 200) {
-        inPaletteView && setInPaletteView(false)
-      } else {
-        !inPaletteView && setInPaletteView(true)
-      }
+      !inPaletteView && setInPaletteView(true)
     } else {
       inPaletteView && setInPaletteView(false)
     }
@@ -75,6 +72,7 @@ export function PaletteTools() {
         animate={inPaletteView ? 'show' : 'hide'}
         className="fixed bottom-10 left-[calc(50%-140px)] z-20 select-none"
         initial="hide"
+        ref={toolsRef}
         variants={{
           hide: { opacity: 0.3, y: 64 + 40 },
           show: { opacity: 1, y: 0 },
@@ -115,7 +113,7 @@ export function PaletteTools() {
               </IconButton>
             </Tooltip>
 
-            <Popover placement="top-start">
+            <Popover placement="top-start" portalContainer={toolsRef.current} shouldCloseOnBlur>
               <PopoverTrigger>
                 <IconButton>
                   <CogIcon width={14} />
@@ -153,6 +151,7 @@ export function PaletteTools() {
                 }}
                 codeString={copiedOptions}
                 disableCopy={isEmptyPalette}
+                disableTooltip
                 hideSymbol
               />
             </Tooltip>
